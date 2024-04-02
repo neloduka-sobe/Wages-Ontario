@@ -9,9 +9,21 @@ output:
 ---
 
 # 1. Loading the Data
+```{R}
+# Loading libraries
+library(tidyverse)
+library(dplyr)
+# Loading the Data
+fuel <- read.csv("fuel.csv")
+wages <- read.csv("wages.csv")
+```
 
 # 2. Description of the Dataset
 
+## 2.1 Fuel Dataset
+```{R}
+names(fuel)
+```
 # 3. Checking Data Integrity, and Data Cleaning
 
 # 4. The Background of the Data
