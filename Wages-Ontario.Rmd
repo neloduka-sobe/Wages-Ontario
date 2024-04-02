@@ -1,0 +1,39 @@
+---
+title: "Analysis of Ontario wages in relation to economic factors based on Ontario Data Catalogue (1997-2019)"
+author:
+  - "Borys Łangowicz (1010725967)"
+  - "Second Author (Student #)"
+date: "2024-04-05"
+output:
+  pdf_document: default
+---
+
+# 1. Loading the Data
+
+# 2. Description of the Dataset
+
+# 3. Checking Data Integrity, and Data Cleaning
+
+# 4. The Background of the Data
+
+# 5. Research Questions
+
+# 6. Tables Summary
+
+# 7. Graphs Summary
+
+# 8. Hypothesis Testing
+
+# 9. Bootstrapping
+
+# 10. Non-linear Regression Analysis
+
+# 11. Cross Validation
+
+# 12. Random Forest
+
+# 13. Random Forest Validation
+
+# 14. Summary of Research
+
+# 15. Appendix
