@@ -2,50 +2,92 @@
 title: "Analysis of Ontario wages in relation to economic factors based on Ontario Data Catalogue (1997-2019)"
 author:
   - "Borys Łangowicz (1010725967)"
-  - "Second Author (Student #)"
+  - "Kian Dianati (1010205485)"
 date: "2024-04-05"
 output:
-  pdf_document: default
+  html_document:
+    number_sections: true
+  pdf_document:
+    number_sections: true
 ---
 
-# 1. Loading the Data
-```{R}
-# Loading libraries
+```{r, include=F}
 library(tidyverse)
-library(dplyr)
+library(ggplot2)
+library(knitr)
+```
+
 # Loading the Data
-fuel <- read.csv("fuel.csv")
-wages <- read.csv("wages.csv")
+
+We will use the following data sets:
+
+```{r}
+wages = read.csv("wages.csv")
 ```
 
-# 2. Description of the Dataset
+# Description of the Data set
 
-## 2.1 Fuel Dataset
-```{R}
-names(fuel)
+The `wages` data set includes the average weekly wages rates by education level and immigration status for Canada and Ontario in the years from 1997 to 2019. It includes the following columns:
+
+```{r}
+names(wages)
 ```
-# 3. Checking Data Integrity, and Data Cleaning
 
-# 4. The Background of the Data
+1. `YEAR`: Indicates the year in which the data was collected.
+2. `Geography`: Indicates the region from which the data was collected. Its 
+   possible values include Canada as well as the Canadian provinces and 
+   territories.
+3. `Type.of.work`: Indicates whether the data in the row is for full-time 
+   employees or part-time employees or both.
+4. `Wages`:
+    1. `Total employees`: The number of employees in the given age range, 
+       education level, and job status.
+    2. `Averag hourly wage rate`: The average hourly wage of the employees in 
+       the given age range, education level, and job status.
+    3. And so on for `Average weekly wage rate`, `Median hourly wage rate`, 
+       and `Median weekly wage rate`.
+5. `Education.level`: Indicates the level of education. It can include the 
+   following:
+```{r, echo=FALSE}
+kable(wages %>%
+  group_by(Education.level) %>%
+  reframe(Education.level) %>%
+  unique())
+```
+6. `Age.group`: Indicates the age range of the individuals under consideration.
+   It can include the following:
+```{r, echo=FALSE}
+kable(wages %>%
+  group_by(Age.group) %>%
+  reframe(Age.group) %>%
+  unique())
+```
+7. `Both.sexes`: The data not seperated by gender.
+8. `Male`: The data for males.
+9. `Female`: The data for females.
 
-# 5. Research Questions
+# Checking Data Integrity, and Data Cleaning
 
-# 6. Tables Summary
+# The Background of the Data
 
-# 7. Graphs Summary
+# Research Questions
 
-# 8. Hypothesis Testing
+# Tables Summary
 
-# 9. Bootstrapping
+# Graphs Summary
 
-# 10. Non-linear Regression Analysis
+# Hypothesis Testing
 
-# 11. Cross Validation
+# Bootstrapping
 
-# 12. Random Forest
+# Non-linear Regression Analysis
 
-# 13. Random Forest Validation
+# Cross Validation
 
-# 14. Summary of Research
+# Random Forest
 
-# 15. Appendix
+# Random Forest Validation
+
+# Summary of Research
+
+# Appendix
