@@ -5,15 +5,16 @@ author:
   - "Kian Dianati (1010205485)"
 date: "2024-04-05"
 output:
-  html_document:
-    number_sections: true
   pdf_document:
+    number_sections: true
+  html_document:
     number_sections: true
 ---
 
 ```{r, include=F}
 library(tidyverse)
 library(ggplot2)
+library(reshape2)
 library(knitr)
 ```
 
@@ -140,18 +141,36 @@ kable(wages %>%
 
 ## How has the average hourly wage rate changed over the years across different age groups?
 ```{R}
-avg_wage_by_age <- wages %>% filter(Wages == "Average hourly wage rate") %>% select(YEAR, Age.group, Both.Sexes) %>% group_by(YEAR, Age.group) %>% summarise(Avg_Hourly_Wage = mean(Both.Sexes))
-avg_wage_by_age
-avg_wage_by_age <- avg_wage_by_age %>%
-  pivot_wider(names_from = Age.group, values_from = Avg_Hourly_Wage)
-kable(avg_wage_by_age)
+avg_wage_by_age <- wages %>%
+  filter(Wages == "Average hourly wage rate",
+         Geography == "Canada",
+         Type.of.work == "Full-time",
+         Education.level == "Total, all education levels") %>%
+  select(YEAR, Age.group, Both.Sexes) %>%
+  group_by(YEAR, Age.group) %>%
+  summarise(Avg_Hourly_Wage = mean(Both.Sexes))
+
+kable(avg_wage_by_age %>%
+  pivot_wider(names_from = Age.group, values_from = Avg_Hourly_Wage))
 ```
 
+```{r}
+ggplot(avg_wage_by_age %>% filter(YEAR == "2019"),
+       aes(x = Age.group, Avg_Hourly_Wage)) +
+  geom_bar(stat = "identity") +
+  labs(x = "Age group",
+       y = "Average Hourly Wage",
+       title = "Wage by Age Group in 2019") +
+  theme(text = element_text(size = 8))
+```
 
 ## How does the average hourly wage rate differ across various education levels for different genders?
 ```{R}
 avg_wage_by_education <- wages %>%
-  filter(Wages == "Average hourly wage rate") %>%
+  filter(Wages == "Average hourly wage rate", 
+         Geography == "Canada",
+         Age.group == "15 years and over",
+         Type.of.work == "Both full- and part-time") %>%
   select(Education.level, Male, Female) %>%
   group_by(Education.level) %>%
   summarise(male_avg = mean(Male),
@@ -161,24 +180,20 @@ kable(avg_wage_by_education)
 ```
 
 ```{R}
-ggplot(avg_wage_by_education, aes(x = Education.level)) +
-  geom_bar(aes(y = male_avg), 
+ggplot(avg_wage_by_education %>% melt(),
+       aes(x = Education.level, fill = variable)) +
+  geom_bar(aes(y = value), 
            stat = "identity", 
-           fill = "blue", 
-           alpha = 0.5,
-           width = 0.55,
-           position = "dodge") +
-  geom_bar(aes(y = female_avg), 
-           stat = "identity", 
-           fill = "red", 
-           alpha = 0.5, 
-           width = 0.5,
-           position = "dodge") +
+           alpha = 0.8,
+           show.legend = TRUE,
+           position = position_identity()) +
   labs(title = "Average Hourly Wage Rate by Education Level and Gender",
        x = "Education Level",
        y = "Average Hourly Wage Rate",
        fill = "Gender") +
-  theme(axis.text.x = element_text(angle = 45, hjust = 1)) +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1),
+        text = element_text(size = 8),
+        legend.position = "bottom") +
   coord_flip()
 ```
 
