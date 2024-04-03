@@ -66,7 +66,12 @@ kable(wages %>%
 8. `Male`: The data for males.
 9. `Female`: The data for females.
 
-# Checking Data Integrity, and Data Cleaning
+# Checking Data Integrity
+```{R}
+# Dropping rows with NA values
+wages <- na.omit(wages)
+# By comparison, it seems there is no NA values
+```
 
 # The Background of the Data
 
