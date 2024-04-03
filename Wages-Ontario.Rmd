@@ -234,7 +234,7 @@ These observations highlight disparities in wages between genders across differe
 ```{R}
 unique(wages$Type.of.work)
 
-full_time_part_time <- wages %>% group_by(Age.group, Type.of.work) %>% summarise(Employees = sum(Both.Sexes))
+full_time_part_time <- wages %>% filter(Age.group %in% c("15-24 years", "25-54 years", "55 years and over")) %>% group_by(Age.group, Type.of.work) %>% summarise(Employees = sum(Both.Sexes))
 
 options(scipen = 999)
 ggplot(full_time_part_time, aes(x = Age.group, y = Employees, fill = Type.of.work)) +
