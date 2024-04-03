@@ -77,6 +77,42 @@ wages <- na.omit(wages)
 
 # Research Questions
 
+## Trend Analysis
+
+  * How has the average hourly wage rate changed over the years across different regions?
+  * Are there any noticeable trends in the median weekly wage rate for full-time employees over the past decade?
+  * What is the overall trend in the number of full-time employees versus part-time employees across different age groups?
+  
+## Regional Disparities
+
+  * How do average hourly wage rates vary between different Canadian provinces and territories?
+  * Are there significant differences in the employment rates between urban and rural areas within a specific province?
+  * Is there a noticeable gender wage gap within specific regions or provinces?
+  
+## Educational Attainment
+
+  * How does the average hourly wage rate differ across various education levels?
+  * Are there any trends in the employment rates based on different levels of education attainment?
+  * Is there a correlation between educational attainment and the likelihood of being employed full-time versus part-time?
+  
+## Age Groups Analysis
+
+  * How do wage rates vary across different age groups, and is there a trend in wage growth as individuals age?
+  * Are there noticeable differences in employment rates between younger and older age groups?
+  * What is the distribution of educational attainment among different age groups, and how does it correlate with employment status and wage rates?
+  
+## Gender Analysis
+
+  * Is there a significant gender wage gap, and how has it evolved over time?
+  * Are there differences in the distribution of employment types (full-time vs. part-time) between males and females?
+  * How does educational attainment affect the gender wage gap within specific age groups or regions?
+  
+## Overall Employment Trends
+
+  * How has the total number of employees changed over the years?
+  * Are there seasonal variations in employment rates or wage rates within certain regions or industries?
+  * What industries or sectors have shown the highest growth in employment rates, and how does this correlate with wage rates?
+  
 # Tables Summary
 
 # Graphs Summary
