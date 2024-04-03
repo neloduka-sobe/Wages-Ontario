@@ -72,7 +72,7 @@ kable(wages %>%
 
 ## Trend Analysis
 
-  * How has the average hourly wage rate changed over the years across different regions?
+  * How has the average hourly wage rate changed over the years across different age groups?
   * Are there any noticeable trends in the median weekly wage rate for full-time employees over the past decade?
   * What is the overall trend in the number of full-time employees versus part-time employees across different age groups?
   
@@ -107,6 +107,16 @@ kable(wages %>%
   * What industries or sectors have shown the highest growth in employment rates, and how does this correlate with wage rates?
   
 # Tables Summary
+
+## How has the average hourly wage rate changed over the years across different age groups?
+```{R}
+avg_wage_by_age <- wages %>% filter(Wages == "Average hourly wage rate") %>% select(YEAR, Age.group, Both.Sexes) %>% group_by(YEAR, Age.group) %>% summarise(Avg_Hourly_Wage = mean(Both.Sexes))
+avg_wage_by_age
+avg_wage_by_age <- avg_wage_by_age %>%
+  pivot_wider(names_from = Age.group, values_from = Avg_Hourly_Wage)
+kable(avg_wage_by_age)
+```
+
 
 ## How does the average hourly wage rate differ across various education levels for different genders?
 ```{R}
