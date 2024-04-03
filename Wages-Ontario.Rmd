@@ -99,7 +99,7 @@ kable(wages %>%
 
 # The Background of the Data
 
-# Research Questions
+# Overall Research Question
 
 ## Trend Analysis
 
@@ -111,7 +111,6 @@ kable(wages %>%
 
   * How do average hourly wage rates vary between different Canadian provinces and territories?
   * Are there significant differences in the employment rates between urban and rural areas within a specific province?
-  * Is there a noticeable gender wage gap within specific regions or provinces?
   
 ## Educational Attainment
 
@@ -134,7 +133,7 @@ kable(wages %>%
 ## Overall Employment Trends
 
   * How has the total number of employees changed over the years?
-  * Are there seasonal variations in employment rates or wage rates within certain regions or industries?
+  * Are there seasonal variations in employment rates or wage rates within certain industries?
   * What industries or sectors have shown the highest growth in employment rates, and how does this correlate with wage rates?
   
 # Summary
@@ -215,6 +214,25 @@ ggplot(avg_wage_by_education %>% melt(),
 4. At higher education levels, such as "Above bachelor’s degree" and "Bachelor’s degree", the wage gap is relatively smaller compared to lower education levels but still exists.
 
 These observations highlight disparities in wages between genders across different education levels, indicating the presence of gender-based wage inequality.
+
+## What is the overall trend in the number of full-time employees versus part-time employees across different age groups?
+
+```{R}
+unique(wages$Type.of.work)
+
+full_time_part_time <- wages %>% group_by(Age.group, Type.of.work) %>% summarise(Employees = sum(Both.Sexes))
+
+options(scipen = 999)
+ggplot(full_time_part_time, aes(x = Age.group, y = Employees, fill = Type.of.work)) +
+  geom_bar(stat = "identity", position = "dodge") +
+  labs(title = "Number of Full-time, Part-time vs Part- and Full-time Employees\n Across Age Groups",
+       x = "Age Group",
+       y = "Number of Employees",
+       fill = "Type of Work") +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1))
+
+```
+
 
 # Hypothesis Testing
 
