@@ -66,13 +66,6 @@ kable(wages %>%
 8. `Male`: The data for males.
 9. `Female`: The data for females.
 
-# Checking Data Integrity
-```{R}
-# Dropping rows with NA values
-wages <- na.omit(wages)
-# By comparison, it seems there is no NA values
-```
-
 # The Background of the Data
 
 # Research Questions
@@ -114,6 +107,25 @@ wages <- na.omit(wages)
   * What industries or sectors have shown the highest growth in employment rates, and how does this correlate with wage rates?
   
 # Tables Summary
+
+## How does the average hourly wage rate differ across various education levels for different genders?
+```{R}
+avg_wage_by_education <- wages %>% filter(Wages == "Average hourly wage rate") %>% select(Education.level, Male, Female)
+avg_wage_by_education <- avg_wage_by_education %>% group_by(Education.level) %>% summarise(male_avg = mean(Male), female_avg = mean(Female))
+kable(avg_wage_by_education)
+```
+
+```{R}
+ggplot(avg_wage_by_education, aes(x = Education.level)) +
+  geom_bar(aes(y = male_avg), stat = "identity", fill = "blue", alpha = 0.5, position = "dodge") +
+  geom_bar(aes(y = female_avg), stat = "identity", fill = "red", alpha = 0.5, position = "dodge") +
+  labs(title = "Average Hourly Wage Rate by Education Level and Gender",
+       x = "Education Level",
+       y = "Average Hourly Wage Rate",
+       fill = "Gender") +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1)) +
+  coord_flip()
+```
 
 # Graphs Summary
 

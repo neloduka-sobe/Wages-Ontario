@@ -490,9 +490,12 @@ under consideration. It can include the following:</li>
 <li><code>Female</code>: The data for females.</li>
 </ol>
 </div>
-<div id="checking-data-integrity-and-data-cleaning" class="section level1" number="3">
+<div id="checking-data-integrity" class="section level1" number="3">
 <h1><span class="header-section-number">3</span> Checking Data
-Integrity, and Data Cleaning</h1>
+Integrity</h1>
+<pre class="r"><code># Dropping rows with NA values
+wages &lt;- na.omit(wages)
+# By comparison, it seems there is no NA values</code></pre>
 </div>
 <div id="the-background-of-the-data" class="section level1" number="4">
 <h1><span class="header-section-number">4</span> The Background of the
@@ -500,6 +503,76 @@ Data</h1>
 </div>
 <div id="research-questions" class="section level1" number="5">
 <h1><span class="header-section-number">5</span> Research Questions</h1>
+<div id="trend-analysis" class="section level2" number="5.1">
+<h2><span class="header-section-number">5.1</span> Trend Analysis</h2>
+<ul>
+<li>How has the average hourly wage rate changed over the years across
+different regions?</li>
+<li>Are there any noticeable trends in the median weekly wage rate for
+full-time employees over the past decade?</li>
+<li>What is the overall trend in the number of full-time employees
+versus part-time employees across different age groups?</li>
+</ul>
+</div>
+<div id="regional-disparities" class="section level2" number="5.2">
+<h2><span class="header-section-number">5.2</span> Regional
+Disparities</h2>
+<ul>
+<li>How do average hourly wage rates vary between different Canadian
+provinces and territories?</li>
+<li>Are there significant differences in the employment rates between
+urban and rural areas within a specific province?</li>
+<li>Is there a noticeable gender wage gap within specific regions or
+provinces?</li>
+</ul>
+</div>
+<div id="educational-attainment" class="section level2" number="5.3">
+<h2><span class="header-section-number">5.3</span> Educational
+Attainment</h2>
+<ul>
+<li>How does the average hourly wage rate differ across various
+education levels?</li>
+<li>Are there any trends in the employment rates based on different
+levels of education attainment?</li>
+<li>Is there a correlation between educational attainment and the
+likelihood of being employed full-time versus part-time?</li>
+</ul>
+</div>
+<div id="age-groups-analysis" class="section level2" number="5.4">
+<h2><span class="header-section-number">5.4</span> Age Groups
+Analysis</h2>
+<ul>
+<li>How do wage rates vary across different age groups, and is there a
+trend in wage growth as individuals age?</li>
+<li>Are there noticeable differences in employment rates between younger
+and older age groups?</li>
+<li>What is the distribution of educational attainment among different
+age groups, and how does it correlate with employment status and wage
+rates?</li>
+</ul>
+</div>
+<div id="gender-analysis" class="section level2" number="5.5">
+<h2><span class="header-section-number">5.5</span> Gender Analysis</h2>
+<ul>
+<li>Is there a significant gender wage gap, and how has it evolved over
+time?</li>
+<li>Are there differences in the distribution of employment types
+(full-time vs. part-time) between males and females?</li>
+<li>How does educational attainment affect the gender wage gap within
+specific age groups or regions?</li>
+</ul>
+</div>
+<div id="overall-employment-trends" class="section level2" number="5.6">
+<h2><span class="header-section-number">5.6</span> Overall Employment
+Trends</h2>
+<ul>
+<li>How has the total number of employees changed over the years?</li>
+<li>Are there seasonal variations in employment rates or wage rates
+within certain regions or industries?</li>
+<li>What industries or sectors have shown the highest growth in
+employment rates, and how does this correlate with wage rates?</li>
+</ul>
+</div>
 </div>
 <div id="tables-summary" class="section level1" number="6">
 <h1><span class="header-section-number">6</span> Tables Summary</h1>
