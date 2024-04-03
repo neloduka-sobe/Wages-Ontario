@@ -54,10 +54,15 @@ wages$Age.group =
                     "25 years and over",
                     "15 years and over"),
          ordered = TRUE)
+
+# Fuel
+fuel = read.csv("fuel.csv") %>% mutate_if(is.character, str_trim)
+
 ```
 
 # Description of the Data set
 
+## Wages by education level 
 The `wages` data set includes the average weekly wages rates by education level and immigration status for Canada and Ontario in the years from 1997 to 2019. It includes the following columns:
 
 ```{r}
@@ -96,6 +101,11 @@ kable(wages %>%
 7. `Both.sexes`: The data not seperated by gender.
 8. `Male`: The data for males.
 9. `Female`: The data for females.
+
+## Fuels price survey information 
+```{r}
+names(fuel)
+```
 
 # The Background of the Data
 
