@@ -22,7 +22,37 @@ library(knitr)
 We will use the following data sets:
 
 ```{r}
-wages = read.csv("wages.csv")
+wages = read.csv("wages.csv") %>% mutate_if(is.character, str_trim)
+
+wages$Education.level =
+  factor(wages$Education.level,
+         levels = c("Above bachelor's degree",
+                    "Bachelor's degree",
+                    "University certificate below bachelors degree",
+                    "University degree",
+                    "Community college, CEGEP",
+                    "Trade certificate or diploma",
+                    "Post-secondary certificate or diploma",
+                    "Some post-secondary",
+                    "High school graduate",
+                    "Some high school",
+                    "PSE  (5,6,7,8,9))",
+                    "No PSE  (0,1,2,3,4)",
+                    "0 - 8  years",
+                    "Total, all education levels"),
+         ordered = TRUE)
+
+wages$Age.group =
+  factor(wages$Age.group,
+         levels = c("25-64 years",
+                    "25-54 years",
+                    "25-34 years",
+                    "20-34 years",
+                    "15-24 years",
+                    "55 years and over",
+                    "25 years and over",
+                    "15 years and over"),
+         ordered = TRUE)
 ```
 
 # Description of the Data set
@@ -120,15 +150,30 @@ kable(avg_wage_by_age)
 
 ## How does the average hourly wage rate differ across various education levels for different genders?
 ```{R}
-avg_wage_by_education <- wages %>% filter(Wages == "Average hourly wage rate") %>% select(Education.level, Male, Female)
-avg_wage_by_education <- avg_wage_by_education %>% group_by(Education.level) %>% summarise(male_avg = mean(Male), female_avg = mean(Female))
+avg_wage_by_education <- wages %>%
+  filter(Wages == "Average hourly wage rate") %>%
+  select(Education.level, Male, Female) %>%
+  group_by(Education.level) %>%
+  summarise(male_avg = mean(Male),
+            female_avg = mean(Female))
+
 kable(avg_wage_by_education)
 ```
 
 ```{R}
 ggplot(avg_wage_by_education, aes(x = Education.level)) +
-  geom_bar(aes(y = male_avg), stat = "identity", fill = "blue", alpha = 0.5, position = "dodge") +
-  geom_bar(aes(y = female_avg), stat = "identity", fill = "red", alpha = 0.5, position = "dodge") +
+  geom_bar(aes(y = male_avg), 
+           stat = "identity", 
+           fill = "blue", 
+           alpha = 0.5,
+           width = 0.55,
+           position = "dodge") +
+  geom_bar(aes(y = female_avg), 
+           stat = "identity", 
+           fill = "red", 
+           alpha = 0.5, 
+           width = 0.5,
+           position = "dodge") +
   labs(title = "Average Hourly Wage Rate by Education Level and Gender",
        x = "Education Level",
        y = "Average Hourly Wage Rate",
