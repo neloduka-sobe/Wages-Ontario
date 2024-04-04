@@ -5,9 +5,9 @@ author:
   - "Kian Dianati (1010205485)"
 date: "2024-04-05"
 output:
-  pdf_document:
-    number_sections: true
   html_document:
+    number_sections: true
+  pdf_document:
     number_sections: true
 ---
 
@@ -73,7 +73,9 @@ fuel = read.csv("fuel.csv") %>% mutate_if(is.character, str_trim)
 # Description of the Data set
 
 ## Wages by education level 
-The `wages` data set includes the average weekly wages rates by education level and immigration status for Canada and Ontario in the years from 1997 to 2019. It includes the following columns:
+The `wages` data set includes the average weekly wages rates by education level 
+and immigration status for Canada and Ontario in the years from 1997 to 2019. 
+It includes the following columns:
 
 ```{r}
 names(wages)
@@ -119,9 +121,18 @@ names(fuel)
 
 # The Background of the Data
 
-The labor and demographic dataset from the Ministry of Labour, Immigration, Training, and Skills Development provides insights into Ontario's workforce demographics, including age groups, employment types, educational levels, wages, and immigration statuses. It is annually updated and used by policymakers, researchers, and economists to inform decisions regarding education, training, workforce development, and immigration policies in the province.
+The labor and demographic dataset from the Ministry of Labour, Immigration, 
+Training, and Skills Development provides insights into Ontario's workforce 
+demographics, including age groups, employment types, educational levels, wages,
+and immigration statuses. It is annually updated and used by policymakers, 
+researchers, and economists to inform decisions regarding education, training, 
+workforce development, and immigration policies in the province.
 
-Additionally, fuel price survey information from the Ministry of Energy offers weekly retail prices for gasoline, diesel, auto propane, and compressed natural gas across ten Ontario markets. This data aids in monitoring fuel price fluctuations and analyzing trends in the energy sector, supporting research and analysis efforts in economics, environmental studies, and energy policy.
+Additionally, fuel price survey information from the Ministry of Energy offers 
+weekly retail prices for gasoline, diesel, auto propane, and compressed natural 
+gas across ten Ontario markets. This data aids in monitoring fuel price 
+fluctuations and analyzing trends in the energy sector, supporting research and
+analysis efforts in economics, environmental studies, and energy policy.
 
 # Overall Research Question
 
@@ -229,13 +240,26 @@ ggplot(avg_wage_by_education %>% melt(),
         legend.position = "bottom") +
   coord_flip()
 ```
+```{r}
+kable(avg_wage_by_education %>%
+  mutate(pay.gap = male_avg - female_avg))
+```
+
+```{r}
+ggplot(avg_wage_by_education %>% mutate(pay.gap = male_avg - female_avg), 
+       aes(x = Education.level, y = pay.gap)) +
+  geom_bar(stat = "identity") +
+  labs(y = "Gender Pay Gap",
+       x = "Education Level",
+       title = "Gender Pay Gap by Education") +
+  coord_flip()
+```
 
 **Observations:**
 
 1. In almost all cases, the average hourly wage for males is higher than for females across various education levels.
-2. The wage gap tends to decrease as the education level increases.
-3. The largest wage gaps are observed at lower education levels, such as "Some high school" and "0 - 8 years", where the male average wage is significantly higher than the female average wage.
-4. At higher education levels, such as "Above bachelor’s degree" and "Bachelor’s degree", the wage gap is relatively smaller compared to lower education levels but still exists.
+2. The largest wage gaps are observed at "Trade certificate or diploma" where
+3. At higher education levels, such as "Above bachelor’s degree" and "Bachelor’s degree", the wage gap is relatively smaller compared to lower education levels but still exists.
 
 These observations highlight disparities in wages between genders across different education levels, indicating the presence of gender-based wage inequality.
 
@@ -244,10 +268,16 @@ These observations highlight disparities in wages between genders across differe
 ```{R}
 unique(wages$Type.of.work)
 
-full_time_part_time <- wages %>% filter(Age.group %in% c("15-24 years", "25-54 years", "55 years and over")) %>% group_by(Age.group, Type.of.work) %>% summarise(Employees = sum(Both.Sexes))
+full_time_part_time <- wages %>% 
+  filter(Age.group %in% c("15-24 years", 
+                          "25-54 years", 
+                          "55 years and over")) %>%
+  group_by(Age.group, Type.of.work) %>%
+  summarise(Employees = sum(Both.Sexes))
 
 options(scipen = 999)
-ggplot(full_time_part_time, aes(x = Age.group, y = Employees, fill = Type.of.work)) +
+ggplot(full_time_part_time, 
+       aes(x = Age.group, y = Employees, fill = Type.of.work)) +
   geom_bar(stat = "identity", position = "dodge") +
   labs(title = "Number of Full-time, Part-time vs Part- and Full-time Employees\n Across Age Groups",
        x = "Age Group",
@@ -256,7 +286,6 @@ ggplot(full_time_part_time, aes(x = Age.group, y = Employees, fill = Type.of.wor
   theme(axis.text.x = element_text(angle = 45, hjust = 1))
 
 ```
-
 
 # Hypothesis Testing
 
