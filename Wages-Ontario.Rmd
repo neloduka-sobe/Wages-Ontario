@@ -90,7 +90,7 @@ names(wages)
 4. `Wages`:
     1. `Total employees`: The number of employees in the given age range, 
        education level, and job status.
-    2. `Averag hourly wage rate`: The average hourly wage of the employees in 
+    2. `Average hourly wage rate`: The average hourly wage of the employees in 
        the given age range, education level, and job status.
     3. And so on for `Average weekly wage rate`, `Median hourly wage rate`, 
        and `Median weekly wage rate`.
@@ -288,6 +288,27 @@ ggplot(full_time_part_time,
 ```
 
 # Hypothesis Testing
+**Null Hypothesis (H0)**: There is no statistically significant distinction in the average wages between male and female workers (μ_male = μ_female).
+
+**Alternative Hypothesis (H1)**: There exists a statistically significant disparity in average wages between male and female workers (μ_male ≠ μ_female).
+To examine this hypothesis, we can employ a two-sample t-test to compare the wage distributions of male and female workers. This entails segregating the dataset into two distinct groups based on gender: male and female.
+
+The resultant p-value derived from the selected statistical test indicates the probability of observing a wage difference as extreme as, or more extreme than, the observed difference, assuming the null hypothesis holds. If the obtained p-value falls below the predetermined significance level (typically 0.05), we reject the null hypothesis, indicating a significant discrepancy in wages between male and female workers.
+
+Moreover, by computing a confidence interval for the disparity in mean wages, we can gauge the plausible range of values for the actual difference between male and female wages.
+
+```{R}
+male_wages <- wages %>% filter(Wages == "Average weekly wage rate") %>% select(Male)
+female_wages <- wages %>% filter(Wages == "Average weekly wage rate") %>% select(Female)
+
+t.test(male_wages, female_wages)
+```
+
+**COnclusions**
+The outcomes derived from the Welch Two Sample t-test underscore a significant contrast in average earnings between male and female workers. With an extraordinarily minute p-value (< 0.00000000000000022), there's compelling evidence to dismiss the null hypothesis, indicating that the mean wages for men and women diverge significantly. The 95% confidence interval for the mean wage discrepancy extends from 116.8124 to 123.6314, suggesting that the actual difference in wages between male and female workers likely lies within this interval.
+
+In summary, the findings overwhelmingly advocate for rejecting the null hypothesis, underscoring a noteworthy disparity in wages between male and female employees. Specifically, the average wage for male workers (627.8701) markedly exceeds that of female workers (507.6481).
+
 
 # Bootstrapping
 
