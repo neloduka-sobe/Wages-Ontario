@@ -383,10 +383,6 @@ cat("95% confidence interval:", "( ", ci[1], "-", ci[2], " )", "\n")
 
 # Cross Validation
 
-# Random Forest
-
-# Random Forest Validation
-
 # Summary of Research
 
 # Appendix
