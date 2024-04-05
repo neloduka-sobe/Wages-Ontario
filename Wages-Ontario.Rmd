@@ -5,9 +5,9 @@ author:
   - "Kian Dianati (1010205485)"
 date: "2024-04-05"
 output:
-  html_document:
-    number_sections: true
   pdf_document:
+    number_sections: true
+  html_document:
     number_sections: true
 ---
 
@@ -16,6 +16,7 @@ library(tidyverse)
 library(ggplot2)
 library(reshape2)
 library(knitr)
+library(randomForest)
 ```
 
 # Loading the Data
@@ -271,7 +272,9 @@ ggplot(avg_wage_by_education %>% mutate(pay.gap = male_avg - female_avg),
 2. The largest wage gaps are observed at "Trade certificate or diploma" where
 3. At higher education levels, such as "Above bachelor’s degree" and "Bachelor’s degree", the wage gap is relatively smaller compared to lower education levels but still exists.
 
-These observations highlight disparities in wages between genders across different education levels, indicating the presence of gender-based wage inequality.
+These observations highlight disparities in wages between genders across 
+different education levels, indicating the presence of gender-based wage 
+inequality.
 
 ## What is the overall trend in the number of full-time employees versus part-time employees across different age groups?
 
@@ -381,7 +384,40 @@ cat("95% confidence interval:", "( ", ci[1], "-", ci[2], " )", "\n")
 
 # Non-linear Regression Analysis
 
+```{r}
+d = wages %>%
+  select(!Both.Sexes) %>%
+  filter(Wages == 'Average hourly wage rate',
+         Type.of.work == 'Both full- and part-time',
+         Geography == 'Canada',
+         Education.level != 'Total, all education levels',
+         Age.group != '15 years and over') %>%
+  pivot_longer(c(Male, Female), 
+               names_to = "gender", 
+               values_to = "wage") 
+
+d = d %>% 
+  mutate(group = sample(c('train', 'test'), 
+                        size = nrow(d), 
+                        prob = c(0.9, 0.1), 
+                        replace=TRUE))
+
+train_data = d %>% filter(group == 'train')
+test_data = d %>% filter(group == 'test')
+
+model = randomForest(wage ~ Education.level + gender + Age.group, 
+                     data = train_data,
+                     ntree = 10,
+                     importance = TRUE)
+```
+
 # Cross Validation
+
+```{r}
+test_data$predicted = predict(model, newdata = test_data)
+
+mean((test_data$wage - test_data$predicted)^2)
+```
 
 # Summary of Research
 
