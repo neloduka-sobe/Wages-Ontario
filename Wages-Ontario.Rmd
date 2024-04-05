@@ -67,7 +67,6 @@ wages$Age.group =
 
 # Fuel
 fuel = read.csv("fuel.csv") %>% mutate_if(is.character, str_trim)
-
 ```
 
 # Description of the Data set
@@ -287,6 +286,42 @@ ggplot(full_time_part_time,
 
 ```
 
+## What is the relationship between Wages and Fuel Price?
+
+```{R}
+fuel.year = fuel %>%
+  mutate(Year = year(as.Date(Date))) %>%
+  group_by(Year) %>%
+  summarise(Avg.Price = mean(Ontario.Average.Moyenne.provinciale))
+
+wages.year = wages %>%
+  filter(Geography == 'Ontario',
+         Wages == 'Average hourly wage rate',
+         Type.of.work == 'Both full- and part-time',
+         Education.level == 'Total, all education levels',
+         Age.group == '15 years and over') %>%
+  select(YEAR, Both.Sexes)
+
+merged_data <- merge(wages.year, fuel.year, by.x = "YEAR", by.y = "Year")
+
+ggplot(merged_data, aes(x = Both.Sexes, y = Avg.Price)) +
+  geom_point() +
+  geom_smooth(method = "lm") +
+  labs(x = "Average wage", 
+       y = "Average fuel price", 
+       title = "Relationship between Wages and Fuel Price")
+
+# fuel and wage vs year
+ggplot(merged_data, aes(x = YEAR)) +
+  geom_line(aes(y = Both.Sexes, color = "Both Sexes"), size = 1.5) +
+  geom_line(aes(y = Avg.Price, color = "Avg. Price")) +
+  # scale_y_continuous(sec.axis = sec_axis(~./0.1, name = "Avg. Price")) +
+  labs(x = "Year", y = "Both Sexes", color = "Legend")
+
+kable(avg_wage_by_education %>%
+  mutate(pay.gap = male_avg - female_avg))
+```
+
 # Hypothesis Testing
 **Null Hypothesis (H0)**: There is no statistically significant distinction in the average wages between male and female workers (μ_male = μ_female).
 
@@ -304,11 +339,10 @@ female_wages <- wages %>% filter(Wages == "Average weekly wage rate") %>% select
 t.test(male_wages, female_wages)
 ```
 
-**COnclusions**
+**Conclusions**
 The outcomes derived from the Welch Two Sample t-test underscore a significant contrast in average earnings between male and female workers. With an extraordinarily minute p-value (< 0.00000000000000022), there's compelling evidence to dismiss the null hypothesis, indicating that the mean wages for men and women diverge significantly. The 95% confidence interval for the mean wage discrepancy extends from 116.8124 to 123.6314, suggesting that the actual difference in wages between male and female workers likely lies within this interval.
 
 In summary, the findings overwhelmingly advocate for rejecting the null hypothesis, underscoring a noteworthy disparity in wages between male and female employees. Specifically, the average wage for male workers (627.8701) markedly exceeds that of female workers (507.6481).
-
 
 # Bootstrapping
 
