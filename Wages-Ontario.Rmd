@@ -357,6 +357,28 @@ In summary, the findings overwhelmingly advocate for rejecting the null hypothes
 
 # Bootstrapping
 
+```{R}
+library(boot)
+
+mean_fuel_price <- function(data) {
+  mean(data[["Toronto.West"]])
+}
+
+set.seed(123)
+n_boot <- 1000 
+bootstrap_means <- replicate(n_boot, {
+  sample_data <- fuel[sample(1:nrow(fuel), replace = TRUE), ]
+  mean_fuel_price(sample_data)
+})
+
+ci <- quantile(bootstrap_means, c(0.025, 0.975))
+
+# Print the results
+cat("Mean fuel price for Ontario:", mean(fuel$Toronto.West), "\n")
+cat("95% confidence interval:", "( ", ci[1], "-", ci[2], " )", "\n")
+
+```
+
 # Non-linear Regression Analysis
 
 # Cross Validation

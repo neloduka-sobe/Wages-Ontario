@@ -1438,6 +1438,26 @@ workers (627.8701) markedly exceeds that of female workers
 </div>
 <div id="bootstrapping" class="section level1" number="7">
 <h1><span class="header-section-number">7</span> Bootstrapping</h1>
+<pre class="r"><code>library(boot)
+
+mean_fuel_price &lt;- function(data) {
+  mean(data[[&quot;Toronto.West&quot;]])
+}
+
+set.seed(123)
+n_boot &lt;- 1000 
+bootstrap_means &lt;- replicate(n_boot, {
+  sample_data &lt;- fuel[sample(1:nrow(fuel), replace = TRUE), ]
+  mean_fuel_price(sample_data)
+})
+
+ci &lt;- quantile(bootstrap_means, c(0.025, 0.975))
+
+# Print the results
+cat(&quot;Mean fuel price for Ontario:&quot;, mean(fuel$Toronto.West), &quot;\n&quot;)</code></pre>
+<pre><code>## Mean fuel price for Ontario: 80.06227</code></pre>
+<pre class="r"><code>cat(&quot;95% confidence interval:&quot;, &quot;( &quot;, ci[1], &quot;-&quot;, ci[2], &quot; )&quot;, &quot;\n&quot;)</code></pre>
+<pre><code>## 95% confidence interval: (  79.26425 - 80.78438  )</code></pre>
 </div>
 <div id="non-linear-regression-analysis" class="section level1" number="8">
 <h1><span class="header-section-number">8</span> Non-linear Regression
