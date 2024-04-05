@@ -406,7 +406,16 @@ wages$Age.group =
          ordered = TRUE)
 
 # Fuel
-fuel = read.csv(&quot;fuel.csv&quot;) %&gt;% mutate_if(is.character, str_trim)</code></pre>
+fuel = read.csv(&quot;fuel.csv&quot;) %&gt;% mutate_if(is.character, str_trim)
+
+fuel &lt;- fuel %&gt;% rename(
+  Toronto.West = Toronto.West.Ouest,
+  Toronto.East = Toronto.East.Est,
+  St.Catharine = St..Catharine.s,
+  Ontario.Average = Ontario.Average.Moyenne.provinciale,
+  Southern.Average.Ontario = Southern.Average.Moyenne.du.sud.de.l.Ontario,
+  Northern.Average.Ontario = Northern.Average.Moyenne.du.nord.de.l.Ontario 
+) %&gt;% select(!(Type.de.carburant)) </code></pre>
 </div>
 <div id="description-of-the-data-set" class="section level1" number="2">
 <h1><span class="header-section-number">2</span> Description of the Data
@@ -541,26 +550,17 @@ under consideration. It can include the following:</li>
 <h2><span class="header-section-number">2.2</span> Fuels price survey
 information</h2>
 <pre class="r"><code>names(fuel)</code></pre>
-<pre><code>##  [1] &quot;Date&quot;                                         
-##  [2] &quot;Ottawa&quot;                                       
-##  [3] &quot;Toronto.West.Ouest&quot;                           
-##  [4] &quot;Toronto.East.Est&quot;                             
-##  [5] &quot;Windsor&quot;                                      
-##  [6] &quot;London&quot;                                       
-##  [7] &quot;Peterborough&quot;                                 
-##  [8] &quot;St..Catharine.s&quot;                              
-##  [9] &quot;Sudbury&quot;                                      
-## [10] &quot;Sault.Saint.Marie&quot;                            
-## [11] &quot;Thunder.Bay&quot;                                  
-## [12] &quot;North.Bay&quot;                                    
-## [13] &quot;Timmins&quot;                                      
-## [14] &quot;Kenora&quot;                                       
-## [15] &quot;Parry.Sound&quot;                                  
-## [16] &quot;Ontario.Average.Moyenne.provinciale&quot;          
-## [17] &quot;Southern.Average.Moyenne.du.sud.de.l.Ontario&quot; 
-## [18] &quot;Northern.Average.Moyenne.du.nord.de.l.Ontario&quot;
-## [19] &quot;Fuel.Type&quot;                                    
-## [20] &quot;Type.de.carburant&quot;</code></pre>
+<pre><code>##  [1] &quot;Date&quot;                     &quot;Ottawa&quot;                  
+##  [3] &quot;Toronto.West&quot;             &quot;Toronto.East&quot;            
+##  [5] &quot;Windsor&quot;                  &quot;London&quot;                  
+##  [7] &quot;Peterborough&quot;             &quot;St.Catharine&quot;            
+##  [9] &quot;Sudbury&quot;                  &quot;Sault.Saint.Marie&quot;       
+## [11] &quot;Thunder.Bay&quot;              &quot;North.Bay&quot;               
+## [13] &quot;Timmins&quot;                  &quot;Kenora&quot;                  
+## [15] &quot;Parry.Sound&quot;              &quot;Ontario.Average&quot;         
+## [17] &quot;Southern.Average.Ontario&quot; &quot;Northern.Average.Ontario&quot;
+## [19] &quot;Fuel.Type&quot;</code></pre>
+<p>TODODODODODOODODODO</p>
 </div>
 </div>
 <div id="the-background-of-the-data" class="section level1" number="3">
@@ -1247,7 +1247,7 @@ relationship between Wages and Fuel Price?</h2>
 <pre class="r"><code>fuel.year = fuel %&gt;%
   mutate(Year = year(as.Date(Date))) %&gt;%
   group_by(Year) %&gt;%
-  summarise(Avg.Price = mean(Ontario.Average.Moyenne.provinciale))
+  summarise(Avg.Price = mean(Ontario.Average))
 
 wages.year = wages %&gt;%
   filter(Geography == &#39;Ontario&#39;,

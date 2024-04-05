@@ -67,6 +67,15 @@ wages$Age.group =
 
 # Fuel
 fuel = read.csv("fuel.csv") %>% mutate_if(is.character, str_trim)
+
+fuel <- fuel %>% rename(
+  Toronto.West = Toronto.West.Ouest,
+  Toronto.East = Toronto.East.Est,
+  St.Catharine = St..Catharine.s,
+  Ontario.Average = Ontario.Average.Moyenne.provinciale,
+  Southern.Average.Ontario = Southern.Average.Moyenne.du.sud.de.l.Ontario,
+  Northern.Average.Ontario = Northern.Average.Moyenne.du.nord.de.l.Ontario 
+) %>% select(!(Type.de.carburant)) 
 ```
 
 # Description of the Data set
@@ -117,6 +126,8 @@ kable(wages %>%
 ```{r}
 names(fuel)
 ```
+
+TODODODODODOODODODO
 
 # The Background of the Data
 
@@ -292,7 +303,7 @@ ggplot(full_time_part_time,
 fuel.year = fuel %>%
   mutate(Year = year(as.Date(Date))) %>%
   group_by(Year) %>%
-  summarise(Avg.Price = mean(Ontario.Average.Moyenne.provinciale))
+  summarise(Avg.Price = mean(Ontario.Average))
 
 wages.year = wages %>%
   filter(Geography == 'Ontario',
