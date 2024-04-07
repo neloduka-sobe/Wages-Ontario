@@ -337,7 +337,11 @@ ggplot(employee.year, aes(x = YEAR, y = Both.Sexes)) +
        y = "Number of Employees")
 ```
 
-**This plot shows an unusual number of employment reduction in 2008.**
+**Conclusions**:
+1. The graph shows a steady increase in the number of employees.
+2. In 2000, there were just over 10,000 employees.
+3. By 2020, the number had risen to approximately 13,000 employees.
+4. Plot shows an unusual number of employment reduction in 2008.
 
 # Hypothesis Testing
 **Null Hypothesis (H0)**: There is no statistically significant distinction in the average wages between male and female workers (μ_male = μ_female).
