@@ -27,8 +27,6 @@ We will use the following data sets:
 ```{r, warning=FALSE}
 wages = read.csv("wages.csv") %>% mutate_if(is.character, str_trim)
 
-#wages <- wages %>% group_by(YEAR, Geography, Type.of.work, Wages, )
-
 wages$Education.level =
   factor(wages$Education.level,
          levels = c("Above bachelor's degree",
@@ -281,7 +279,6 @@ ggplot(full_time_part_time,
 3. The data suggests a trend where as individuals grow older, they tend to transition towards full-time employment.
 4. Further analysis, such as examining trends over time or considering demographic factors, may provide additional insights into the employment dynamics across different age groups.
 
-
 ## What is the relationship between Wages and Fuel Price?
 
 ```{R, warning=FALSE}
@@ -368,9 +365,9 @@ cat("95% confidence interval:", "( ", ci[1], "-", ci[2], " )", "\n")
 
 According to our findings, the mean fuel price for Ontario stands at `r mean(fuel$Toronto.West)`. Our computed 95% confidence interval spans from `r ci[1]` to `r ci[2]``. This suggests with 95% confidence that the genuine mean fuel price for Ontario lies within this interval.
 
-# Non-linear Regression Analysis
+# Random Forest
 
-```{r}
+```{r, warning=FALSE}
 d = wages %>%
   select(!Both.Sexes) %>%
   filter(Wages == 'Average hourly wage rate',
@@ -399,7 +396,7 @@ model = randomForest(wage ~ Education.level + gender + Age.group,
 
 # Cross Validation
 
-```{r}
+```{r, warning=FALSE}
 test_data$predicted = predict(model, newdata = test_data)
 
 mean((test_data$wage - test_data$predicted)^2)
