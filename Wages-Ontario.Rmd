@@ -212,7 +212,6 @@ ggplot(avg_wage_by_age %>% filter(YEAR == "2019"),
 1. Across all age groups, there is a general trend of increasing average hourly wage rates over the years.
 2. The wage rates tend to increase with age, with the highest rates typically observed in the 55 years and over age group.
 3. The 15-24 years age group consistently has the lowest average hourly wage rates, which gradually increase as individuals move into older age groups.
-4. There is a noticeable increase in wage rates during the late 1990s and early 2000s, followed by a slight dip during the economic downturn of 2008-2009, after which wages steadily increased again.
 
 These observations provide an overview of how the average hourly wage rates have changed over the years across different age groups.
 
@@ -364,6 +363,8 @@ In summary, the findings overwhelmingly advocate for rejecting the null hypothes
 
 # Bootstrapping
 
+We utilize bootstrapping to estimate the sampling distribution of the mean fuel price for Toronto West and to compute a confidence interval.
+
 ```{R}
 library(boot)
 
@@ -385,6 +386,9 @@ cat("Mean fuel price for Ontario:", mean(fuel$Toronto.West), "\n")
 cat("95% confidence interval:", "( ", ci[1], "-", ci[2], " )", "\n")
 
 ```
+
+According to our findings, the mean fuel price for Ontario stands at `r mean(fuel$Toronto.West)`. Our computed 95% confidence interval spans from `r ci[1]` to `r ci[2]``. This suggests with 95% confidence that the genuine mean fuel price for Ontario lies within this interval.
+
 
 # Random Forest
 
