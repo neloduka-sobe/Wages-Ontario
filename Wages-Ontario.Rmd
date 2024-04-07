@@ -79,7 +79,7 @@ The `wages` data set includes the average weekly wages rates by education level
 and immigration status for Canada and Ontario in the years from 1997 to 2019. 
 It includes the following columns:
 
-```{r, warning=FALSE, echo=False}
+```{r, warning=FALSE, echo=FALSE}
 names(wages)
 ```
 
@@ -117,7 +117,7 @@ kable(wages %>%
 9. `Female`: The data for females.
 
 ## Fuels price survey information 
-```{r, warning=FALSE, echo=False}
+```{r, warning=FALSE, echo=FALSE}
 names(fuel)
 ```
 
