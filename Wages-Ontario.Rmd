@@ -7,6 +7,7 @@ date: "2024-04-05"
 output:
   pdf_document:
     number_sections: true
+    latex_engine: xelatex
   html_document:
     number_sections: true
 ---
@@ -23,16 +24,8 @@ library(randomForest)
 
 We will use the following data sets:
 
-```{r}
+```{r, warning=FALSE}
 wages = read.csv("wages.csv") %>% mutate_if(is.character, str_trim)
-
-# Clean age ranges
-# Want to achieve:
-# 15-24 DONE
-# 25-34 DONE
-# 35-54 // 25-54 minus 25-34
-# 55-64 // 25-64 minus 25-54
-# 65+ // 55+ minus 55-64
 
 #wages <- wages %>% group_by(YEAR, Geography, Type.of.work, Wages, )
 
@@ -86,7 +79,7 @@ The `wages` data set includes the average weekly wages rates by education level
 and immigration status for Canada and Ontario in the years from 1997 to 2019. 
 It includes the following columns:
 
-```{r}
+```{r, warning=FALSE}
 names(wages)
 ```
 
@@ -105,7 +98,7 @@ names(wages)
        and `Median weekly wage rate`.
 5. `Education.level`: Indicates the level of education. It can include the 
    following:
-```{r, echo=FALSE}
+```{r, echo=FALSE, warning=FALSE}
 kable(wages %>%
   group_by(Education.level) %>%
   reframe(Education.level) %>%
@@ -113,7 +106,7 @@ kable(wages %>%
 ```
 6. `Age.group`: Indicates the age range of the individuals under consideration.
    It can include the following:
-```{r, echo=FALSE}
+```{r, echo=FALSE, warning=FALSE}
 kable(wages %>%
   group_by(Age.group) %>%
   reframe(Age.group) %>%
@@ -124,11 +117,18 @@ kable(wages %>%
 9. `Female`: The data for females.
 
 ## Fuels price survey information 
-```{r}
+```{r, warning=FALSE}
 names(fuel)
 ```
 
-TODODODODODOODODODO
+1. `Date`: Indicates the date on which the data was collected.
+2. `Fuel Price`: Represents the price of fuel.
+3. `Ottawa`, `Toronto.West`, `Toronto.East`, `Windsor`, `London`, `Peterborough`, `St.Catharine`, `Sudbury`, `Sault.Saint.Marie`, `Thunder.Bay`, `North.Bay`, `Timmins`, `Kenora`, `Parry.Sound`: Represents the fuel price in various locations in Ontario, Canada.
+4. `Ontario.Average`: Indicates the average fuel price across different regions of Ontario.
+5. `Southern.Average.Ontario`: Indicates the average fuel price across the southern regions of Ontario.
+6. `Northern.Average.Ontario`: Indicates the average fuel price across the northern regions of Ontario.
+7. `Fuel.Type`: Indicates the type of fuel associated with the data.
+
 
 # The Background of the Data
 
@@ -147,45 +147,20 @@ analysis efforts in economics, environmental studies, and energy policy.
 
 # Overall Research Question
 
-## Trend Analysis
+Our research aims to explore wage dynamics in Ontario, considering economic factors. We're particularly interested in:
 
-  * How has the average hourly wage rate changed over the years across different age groups?
-  * Are there any noticeable trends in the median weekly wage rate for full-time employees over the past decade?
-  * What is the overall trend in the number of full-time employees versus part-time employees across different age groups?
-  
-## Regional Disparities
-
-  * How do average hourly wage rates vary between different Canadian provinces and territories?
-  * Are there significant differences in the employment rates between urban and rural areas within a specific province?
-  
-## Educational Attainment
-
-  * How does the average hourly wage rate differ across various education levels?
-  * Are there any trends in the employment rates based on different levels of education attainment?
-  * Is there a correlation between educational attainment and the likelihood of being employed full-time versus part-time?
-  
-## Age Groups Analysis
-
-  * How do wage rates vary across different age groups, and is there a trend in wage growth as individuals age?
-  * Are there noticeable differences in employment rates between younger and older age groups?
-  * What is the distribution of educational attainment among different age groups, and how does it correlate with employment status and wage rates?
-  
-## Gender Analysis
-
-  * Is there a significant gender wage gap, and how has it evolved over time?
-  * Are there differences in the distribution of employment types (full-time vs. part-time) between males and females?
-  * How does educational attainment affect the gender wage gap within specific age groups or regions?
-  
-## Overall Employment Trends
-
-  * How has the total number of employees changed over the years?
-  * Are there seasonal variations in employment rates or wage rates within certain industries?
-  * What industries or sectors have shown the highest growth in employment rates, and how does this correlate with wage rates?
+1. How has the average hourly wage rate changed over the years across different age groups?
+2. How does the average hourly wage rate differ across various education levels?
+3. Are there any trends in the employment rates based on different levels of education attainment?
+4. How do wage rates vary across different age groups, and is there a trend in wage growth as individuals age?
+5. Is there a significant gender wage gap, and how has it evolved over time?
+6. How does educational attainment affect the gender wage gap?
+7. How has the total number of employees changed over the years?
   
 # Summary
 
 ## How has the average hourly wage rate changed over the years across different age groups?
-```{R}
+```{R, warning=FALSE}
 avg_wage_by_age <- wages %>%
   filter(Wages == "Average hourly wage rate",
          Geography == "Canada",
@@ -200,7 +175,7 @@ kable(avg_wage_by_age %>%
 ```
 
 
-```{r}
+```{r, warning=FALSE}
 ggplot(avg_wage_by_age %>% filter(YEAR == "2019"),
        aes(x = Age.group, Avg_Hourly_Wage)) +
   geom_bar(stat = "identity") +
@@ -215,12 +190,11 @@ ggplot(avg_wage_by_age %>% filter(YEAR == "2019"),
 1. Across all age groups, there is a general trend of increasing average hourly wage rates over the years.
 2. The wage rates tend to increase with age, with the highest rates typically observed in the 55 years and over age group.
 3. The 15-24 years age group consistently has the lowest average hourly wage rates, which gradually increase as individuals move into older age groups.
-4. There is a noticeable increase in wage rates during the late 1990s and early 2000s, followed by a slight dip during the economic downturn of 2008-2009, after which wages steadily increased again.
 
 These observations provide an overview of how the average hourly wage rates have changed over the years across different age groups.
 
 ## How does the average hourly wage rate differ across various education levels for different genders?
-```{R}
+```{R, warning=FALSE}
 avg_wage_by_education <- wages %>%
   filter(Wages == "Average hourly wage rate", 
          Geography == "Canada",
@@ -234,7 +208,7 @@ avg_wage_by_education <- wages %>%
 kable(avg_wage_by_education)
 ```
 
-```{R}
+```{R, warning=FALSE}
 ggplot(avg_wage_by_education %>% melt(),
        aes(x = Education.level, fill = variable)) +
   geom_bar(aes(y = value), 
@@ -251,12 +225,12 @@ ggplot(avg_wage_by_education %>% melt(),
         legend.position = "bottom") +
   coord_flip()
 ```
-```{r}
+```{r, warning=FALSE}
 kable(avg_wage_by_education %>%
   mutate(pay.gap = male_avg - female_avg))
 ```
 
-```{r}
+```{r, warning=FALSE}
 ggplot(avg_wage_by_education %>% mutate(pay.gap = male_avg - female_avg), 
        aes(x = Education.level, y = pay.gap)) +
   geom_bar(stat = "identity") +
@@ -278,7 +252,7 @@ inequality.
 
 ## What is the overall trend in the number of full-time employees versus part-time employees across different age groups?
 
-```{R}
+```{R, warning=FALSE}
 unique(wages$Type.of.work)
 
 full_time_part_time <- wages %>% 
@@ -300,9 +274,17 @@ ggplot(full_time_part_time,
 
 ```
 
+**Conclusions**:
+
+1. Across all age groups, the number of full-time employees is consistently higher than the number of part-time employees.
+2. The age group of 25-54 years has the highest total number of employees, followed by the age group of 55 years and over, and then the age group of 15-24 years.
+3. The data suggests a trend where as individuals grow older, they tend to transition towards full-time employment.
+4. Further analysis, such as examining trends over time or considering demographic factors, may provide additional insights into the employment dynamics across different age groups.
+
+
 ## What is the relationship between Wages and Fuel Price?
 
-```{R}
+```{R, warning=FALSE}
 fuel.year = fuel %>%
   mutate(Year = year(as.Date(Date))) %>%
   group_by(Year) %>%
@@ -346,7 +328,7 @@ The resultant p-value derived from the selected statistical test indicates the p
 
 Moreover, by computing a confidence interval for the disparity in mean wages, we can gauge the plausible range of values for the actual difference between male and female wages.
 
-```{R}
+```{R, warning=FALSE}
 male_wages <- wages %>% filter(Wages == "Average weekly wage rate") %>% select(Male)
 female_wages <- wages %>% filter(Wages == "Average weekly wage rate") %>% select(Female)
 
@@ -360,7 +342,9 @@ In summary, the findings overwhelmingly advocate for rejecting the null hypothes
 
 # Bootstrapping
 
-```{R}
+We utilize bootstrapping to estimate the sampling distribution of the mean fuel price for Toronto West and to compute a confidence interval.
+
+```{R, warning=FALSE}
 library(boot)
 
 mean_fuel_price <- function(data) {
@@ -381,6 +365,8 @@ cat("Mean fuel price for Ontario:", mean(fuel$Toronto.West), "\n")
 cat("95% confidence interval:", "( ", ci[1], "-", ci[2], " )", "\n")
 
 ```
+
+According to our findings, the mean fuel price for Ontario stands at `r mean(fuel$Toronto.West)`. Our computed 95% confidence interval spans from `r ci[1]` to `r ci[2]``. This suggests with 95% confidence that the genuine mean fuel price for Ontario lies within this interval.
 
 # Non-linear Regression Analysis
 
@@ -418,6 +404,8 @@ test_data$predicted = predict(model, newdata = test_data)
 
 mean((test_data$wage - test_data$predicted)^2)
 ```
+
+The MSE of around `r mean((test_data$wage - test_data$predicted)^2)` shows the average difference between actual and predicted wages. Such a value is considered significant, suggesting that the model may not generalize well to new data. This also means, that 
 
 # Summary of Research
 
