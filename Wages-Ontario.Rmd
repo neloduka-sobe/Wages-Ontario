@@ -24,7 +24,7 @@ library(randomForest)
 
 We will use the following data sets:
 
-```{r}
+```{r, warning=FALSE}
 wages = read.csv("wages.csv") %>% mutate_if(is.character, str_trim)
 
 wages$Education.level =
@@ -77,7 +77,7 @@ The `wages` data set includes the average weekly wages rates by education level
 and immigration status for Canada and Ontario in the years from 1997 to 2019. 
 It includes the following columns:
 
-```{r}
+```{r, warning=FALSE}
 names(wages)
 ```
 
@@ -96,7 +96,7 @@ names(wages)
        and `Median weekly wage rate`.
 5. `Education.level`: Indicates the level of education. It can include the 
    following:
-```{r, echo=FALSE}
+```{r, warning=FALSE}
 kable(wages %>%
   group_by(Education.level) %>%
   reframe(Education.level) %>%
@@ -115,7 +115,7 @@ kable(wages %>%
 9. `Female`: The data for females.
 
 ## Fuels price survey information 
-```{r}
+```{r, warning=FALSE}
 names(fuel)
 ```
 
@@ -144,45 +144,20 @@ analysis efforts in economics, environmental studies, and energy policy.
 
 # Overall Research Question
 
-## Trend Analysis
+Our research aims to explore wage dynamics in Ontario, considering economic factors. We're particularly interested in:
 
-  * How has the average hourly wage rate changed over the years across different age groups?
-  * Are there any noticeable trends in the median weekly wage rate for full-time employees over the past decade?
-  * What is the overall trend in the number of full-time employees versus part-time employees across different age groups?
-  
-## Regional Disparities
-
-  * How do average hourly wage rates vary between different Canadian provinces and territories?
-  * Are there significant differences in the employment rates between urban and rural areas within a specific province?
-  
-## Educational Attainment
-
-  * How does the average hourly wage rate differ across various education levels?
-  * Are there any trends in the employment rates based on different levels of education attainment?
-  * Is there a correlation between educational attainment and the likelihood of being employed full-time versus part-time?
-  
-## Age Groups Analysis
-
-  * How do wage rates vary across different age groups, and is there a trend in wage growth as individuals age?
-  * Are there noticeable differences in employment rates between younger and older age groups?
-  * What is the distribution of educational attainment among different age groups, and how does it correlate with employment status and wage rates?
-  
-## Gender Analysis
-
-  * Is there a significant gender wage gap, and how has it evolved over time?
-  * Are there differences in the distribution of employment types (full-time vs. part-time) between males and females?
-  * How does educational attainment affect the gender wage gap within specific age groups or regions?
-  
-## Overall Employment Trends
-
-  * How has the total number of employees changed over the years?
-  * Are there seasonal variations in employment rates or wage rates within certain industries?
-  * What industries or sectors have shown the highest growth in employment rates, and how does this correlate with wage rates?
+1. How has the average hourly wage rate changed over the years across different age groups?
+2. How does the average hourly wage rate differ across various education levels?
+3. Are there any trends in the employment rates based on different levels of education attainment?
+4. How do wage rates vary across different age groups, and is there a trend in wage growth as individuals age?
+5. Is there a significant gender wage gap, and how has it evolved over time?
+6. How does educational attainment affect the gender wage gap?
+7. How has the total number of employees changed over the years?
   
 # Summary
 
 ## How has the average hourly wage rate changed over the years across different age groups?
-```{R}
+```{R, warning=FALSE}
 avg_wage_by_age <- wages %>%
   filter(Wages == "Average hourly wage rate",
          Geography == "Canada",
@@ -197,7 +172,7 @@ kable(avg_wage_by_age %>%
 ```
 
 
-```{r}
+```{r, warning=FALSE}
 ggplot(avg_wage_by_age %>% filter(YEAR == "2019"),
        aes(x = Age.group, Avg_Hourly_Wage)) +
   geom_bar(stat = "identity") +
@@ -216,7 +191,7 @@ ggplot(avg_wage_by_age %>% filter(YEAR == "2019"),
 These observations provide an overview of how the average hourly wage rates have changed over the years across different age groups.
 
 ## How does the average hourly wage rate differ across various education levels for different genders?
-```{R}
+```{R, warning=FALSE}
 avg_wage_by_education <- wages %>%
   filter(Wages == "Average hourly wage rate", 
          Geography == "Canada",
@@ -230,7 +205,7 @@ avg_wage_by_education <- wages %>%
 kable(avg_wage_by_education)
 ```
 
-```{R}
+```{R, warning=FALSE}
 ggplot(avg_wage_by_education %>% melt(),
        aes(x = Education.level, fill = variable)) +
   geom_bar(aes(y = value), 
@@ -247,12 +222,12 @@ ggplot(avg_wage_by_education %>% melt(),
         legend.position = "bottom") +
   coord_flip()
 ```
-```{r}
+```{r, warning=FALSE}
 kable(avg_wage_by_education %>%
   mutate(pay.gap = male_avg - female_avg))
 ```
 
-```{r}
+```{r, warning=FALSE}
 ggplot(avg_wage_by_education %>% mutate(pay.gap = male_avg - female_avg), 
        aes(x = Education.level, y = pay.gap)) +
   geom_bar(stat = "identity") +
@@ -274,7 +249,7 @@ inequality.
 
 ## What is the overall trend in the number of full-time employees versus part-time employees across different age groups?
 
-```{R}
+```{R, warning=FALSE}
 unique(wages$Type.of.work)
 
 full_time_part_time <- wages %>% 
@@ -305,7 +280,7 @@ ggplot(full_time_part_time,
 
 ## What is the relationship between Wages and Fuel Price?
 
-```{R}
+```{R, warning=FALSE}
 fuel.year = fuel %>%
   mutate(Year = year(as.Date(Date))) %>%
   group_by(Year) %>%
@@ -349,7 +324,7 @@ The resultant p-value derived from the selected statistical test indicates the p
 
 Moreover, by computing a confidence interval for the disparity in mean wages, we can gauge the plausible range of values for the actual difference between male and female wages.
 
-```{R}
+```{R, warning=FALSE}
 male_wages <- wages %>% filter(Wages == "Average weekly wage rate") %>% select(Male)
 female_wages <- wages %>% filter(Wages == "Average weekly wage rate") %>% select(Female)
 
@@ -365,7 +340,7 @@ In summary, the findings overwhelmingly advocate for rejecting the null hypothes
 
 We utilize bootstrapping to estimate the sampling distribution of the mean fuel price for Toronto West and to compute a confidence interval.
 
-```{R}
+```{R, warning=FALSE}
 library(boot)
 
 mean_fuel_price <- function(data) {
@@ -392,7 +367,7 @@ According to our findings, the mean fuel price for Ontario stands at `r mean(fue
 
 # Random Forest
 
-```{r}
+```{r, warning=FALSE}
 d = wages %>%
   select(!Both.Sexes) %>%
   filter(Wages == 'Average hourly wage rate',
@@ -421,7 +396,7 @@ model = randomForest(wage ~ Education.level + gender + Age.group,
 
 # Cross Validation
 
-```{r}
+```{r, warning=FALSE}
 test_data$predicted = predict(model, newdata = test_data)
 
 mean((test_data$wage - test_data$predicted)^2)
