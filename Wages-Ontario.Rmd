@@ -7,6 +7,7 @@ date: "2024-04-05"
 output:
   pdf_document:
     number_sections: true
+    latex_engine: xelatex
   html_document:
     number_sections: true
 ---
@@ -25,16 +26,6 @@ We will use the following data sets:
 
 ```{r}
 wages = read.csv("wages.csv") %>% mutate_if(is.character, str_trim)
-
-# Clean age ranges
-# Want to achieve:
-# 15-24 DONE
-# 25-34 DONE
-# 35-54 // 25-54 minus 25-34
-# 55-64 // 25-64 minus 25-54
-# 65+ // 55+ minus 55-64
-
-#wages <- wages %>% group_by(YEAR, Geography, Type.of.work, Wages, )
 
 wages$Education.level =
   factor(wages$Education.level,
