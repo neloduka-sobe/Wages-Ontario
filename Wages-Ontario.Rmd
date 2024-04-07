@@ -119,7 +119,13 @@ kable(wages %>%
 names(fuel)
 ```
 
-TODODODODODOODODODO
+1. `Date`: Indicates the date on which the data was collected.
+2. `Fuel Price`: Represents the price of fuel.
+3. `Ottawa`, `Toronto.West`, `Toronto.East`, `Windsor`, `London`, `Peterborough`, `St.Catharine`, `Sudbury`, `Sault.Saint.Marie`, `Thunder.Bay`, `North.Bay`, `Timmins`, `Kenora`, `Parry.Sound`: Represents the fuel price in various locations in Ontario, Canada.
+4. `Ontario.Average`: Indicates the average fuel price across different regions of Ontario.
+5. `Southern.Average.Ontario`: Indicates the average fuel price across the southern regions of Ontario.
+6. `Northern.Average.Ontario`: Indicates the average fuel price across the northern regions of Ontario.
+7. `Fuel.Type`: Indicates the type of fuel associated with the data.
 
 # The Background of the Data
 
