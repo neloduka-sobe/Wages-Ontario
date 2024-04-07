@@ -22,11 +22,8 @@ library(dplyr, warn.conflicts = FALSE)
 options(dplyr.summarise.inform = FALSE)
 ```
 
-# Loading the Data
 
-We will use the following data sets:
-
-```{r, warning=FALSE}
+```{r, warning=FALSE, echo=F}
 wages = read.csv("wages.csv") %>% mutate_if(is.character, str_trim)
 
 wages$Education.level =
@@ -72,7 +69,7 @@ fuel <- fuel %>% rename(
 ) %>% select(!(Type.de.carburant)) 
 ```
 
-# Description of the Data set
+# Description of the Data Set
 
 ## Wages by education level 
 The `wages` data set includes the average weekly wages rates by education level 
@@ -356,7 +353,7 @@ The resultant p-value derived from the selected statistical test indicates the p
 
 Moreover, by computing a confidence interval for the disparity in mean wages, we can gauge the plausible range of values for the actual difference between male and female wages.
 
-```{R, warning=FALSE}
+```{R, warning=FALSE, echo=F}
 male_wages <- wages %>% filter(Wages == "Average weekly wage rate") %>% select(Male)
 female_wages <- wages %>% filter(Wages == "Average weekly wage rate") %>% select(Female)
 
@@ -372,7 +369,7 @@ In summary, the findings overwhelmingly advocate for rejecting the null hypothes
 
 We utilize bootstrapping to estimate the sampling distribution of the mean fuel price for Toronto West and to compute a confidence interval.
 
-```{R, warning=FALSE}
+```{R, warning=FALSE, echo=FALSE}
 library(boot)
 
 mean_fuel_price <- function(data) {
@@ -398,7 +395,7 @@ According to our findings, the mean fuel price for Ontario stands at `r mean(fue
 
 # Random Forest
 
-```{r, warning=FALSE}
+```{r, warning=FALSE, echo=FALSE}
 d = wages %>%
   select(!Both.Sexes) %>%
   filter(Wages == 'Average hourly wage rate',
@@ -427,7 +424,7 @@ model = randomForest(wage ~ Education.level + gender + Age.group,
 
 # Cross Validation
 
-```{r, warning=FALSE}
+```{r, warning=FALSE, echo=F}
 test_data$predicted = predict(model, newdata = test_data)
 
 mean((test_data$wage - test_data$predicted)^2)
@@ -438,3 +435,261 @@ The MSE of around `r mean((test_data$wage - test_data$predicted)^2)` shows the a
 # Summary of Research
 
 # Appendix
+1. **Importing libraries**
+```{r, results = FALSE}
+library(tidyverse)
+library(ggplot2)
+library(reshape2)
+library(knitr)
+library(randomForest)
+library(dplyr, warn.conflicts = FALSE)
+options(dplyr.summarise.inform = FALSE)
+```
+
+2. **Loading the data**
+```{r, results=F}
+wages = read.csv("wages.csv") %>% mutate_if(is.character, str_trim)
+
+wages$Education.level =
+  factor(wages$Education.level,
+         levels = c("Above bachelor's degree",
+                    "Bachelor's degree",
+                    "University certificate below bachelors degree",
+                    "University degree",
+                    "Community college, CEGEP",
+                    "Trade certificate or diploma",
+                    "Post-secondary certificate or diploma",
+                    "Some post-secondary",
+                    "High school graduate",
+                    "Some high school",
+                    "PSE  (5,6,7,8,9))",
+                    "No PSE  (0,1,2,3,4)",
+                    "0 - 8  years",
+                    "Total, all education levels"),
+         ordered = TRUE)
+
+wages$Age.group =
+  factor(wages$Age.group,
+         levels = c("25-64 years",
+                    "25-54 years",
+                    "25-34 years",
+                    "20-34 years",
+                    "15-24 years",
+                    "55 years and over",
+                    "25 years and over",
+                    "15 years and over"),
+         ordered = TRUE)
+
+# Fuel
+fuel = read.csv("fuel.csv") %>% mutate_if(is.character, str_trim)
+
+fuel <- fuel %>% rename(
+  Toronto.West = Toronto.West.Ouest,
+  Toronto.East = Toronto.East.Est,
+  St.Catharine = St..Catharine.s,
+  Ontario.Average = Ontario.Average.Moyenne.provinciale,
+  Southern.Average.Ontario = Southern.Average.Moyenne.du.sud.de.l.Ontario,
+  Northern.Average.Ontario = Northern.Average.Moyenne.du.nord.de.l.Ontario 
+) %>% select(!(Type.de.carburant)) 
+```
+
+3. **Description of the Data Set**
+```{r, results=FALSE}
+names(wages)
+```
+
+```{r, results=FALSE}
+kable(wages %>%
+  group_by(Education.level) %>%
+  reframe(Education.level) %>%
+  unique())
+```
+
+```{r, results=FALSE}
+kable(wages %>%
+  group_by(Age.group) %>%
+  reframe(Age.group) %>%
+  unique())
+```
+
+```{r, results=FALSE}
+names(fuel)
+```
+
+4. **Analysis**
+```{R, results=F}
+avg_wage_by_age <- wages %>%
+  filter(Wages == "Average hourly wage rate",
+         Geography == "Canada",
+         Type.of.work == "Full-time",
+         Education.level == "Total, all education levels") %>%
+  select(YEAR, Age.group, Both.Sexes) %>%
+  group_by(YEAR, Age.group) %>%
+  summarise(Avg_Hourly_Wage = mean(Both.Sexes))
+
+kable(avg_wage_by_age %>%
+  pivot_wider(names_from = Age.group, values_from = Avg_Hourly_Wage))
+```
+
+```{r, results=F}
+ggplot(avg_wage_by_age %>% 
+         filter(YEAR == "2019"),
+       aes(x = Age.group, Avg_Hourly_Wage)) +
+  geom_bar(stat = "identity") +
+  labs(x = "Age group",
+       y = "Average Hourly Wage",
+       title = "Wage by Age Group in 2019") +
+  theme(text = element_text(size = 8))
+```
+
+```{R, results=F}
+avg_wage_by_education <- wages %>%
+  filter(Wages == "Average hourly wage rate", 
+         Geography == "Canada",
+         Age.group == "15 years and over",
+         # YEAR == '2019',
+         Type.of.work == "Both full- and part-time") %>%
+  select(Education.level, Male, Female, Both.Sexes) %>%
+  group_by(Education.level) %>%
+  summarise(male_avg = mean(Male),
+            female_avg = mean(Female),
+            Total = mean(Both.Sexes))
+
+kable(avg_wage_by_education %>%
+  mutate(pay.gap = male_avg - female_avg),
+  col.names = c("Education Level", "Male", "Female", "Total", "Pay gap"),
+  caption = "Average wage by education level in male and female employees")
+```
+
+```{R, results = F}
+ggplot(avg_wage_by_education %>% melt(),
+       aes(x = Education.level, fill = variable)) +
+  geom_bar(aes(y = value), 
+           stat = "identity", 
+           alpha = 0.8,
+           show.legend = TRUE,
+           position = position_identity()) +
+  labs(title = "Average Hourly Wage Rate by Education Level and Gender",
+       x = "Education Level",
+       y = "Average Hourly Wage Rate",
+       fill = "Gender") +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1),
+        text = element_text(size = 8),
+        legend.position = "bottom") +
+  coord_flip()
+```
+
+```{r, results = F}
+ggplot(avg_wage_by_education %>% mutate(pay.gap = male_avg - female_avg), 
+       aes(x = Education.level, y = pay.gap)) +
+  geom_bar(stat = "identity") +
+  labs(y = "Gender Pay Gap",
+       x = "Education Level",
+       title = "Gender Pay Gap by Education") +
+  coord_flip()
+```
+
+```{R, results = F}
+full_time_part_time <- wages %>% 
+  filter(Age.group %in% c("15-24 years", 
+                          "25-54 years", 
+                          "55 years and over"),
+         Geography == 'Canada',
+         Education.level == 'Total, all education levels',
+         Wages == "Total employees") %>%
+  group_by(Age.group, Type.of.work) %>%
+  summarise(Employees = sum(Both.Sexes))
+
+options(scipen = 999)
+ggplot(full_time_part_time, 
+       aes(x = Age.group, y = Employees, fill = Type.of.work)) +
+  geom_bar(stat = "identity", position = "dodge") +
+  labs(title = "Number of Full-time, Part-time vs Part- and Full-time Employees\n Across Age Groups",
+       x = "Age Group",
+       y = "Number of Employees",
+       fill = "Type of Work") +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1))
+
+```
+
+```{r, results = F}
+employee.year = wages %>%
+  filter(Wages == "Total employees",
+         Geography == "Canada",
+         Type.of.work == "Full-time",
+         Education.level == "Total, all education levels",
+         Age.group == '15 years and over') %>%
+  select(YEAR, Both.Sexes)
+
+ggplot(employee.year, aes(x = YEAR, y = Both.Sexes)) +
+  geom_point() +
+  labs(title = "Number of employees in a given year",
+       x = "Year",
+       y = "Number of Employees (thousands)")
+```
+
+5. **Hypothesis Testing**
+```{R, results=F}
+male_wages <- wages %>% filter(Wages == "Average weekly wage rate") %>% select(Male)
+female_wages <- wages %>% filter(Wages == "Average weekly wage rate") %>% select(Female)
+
+t.test(male_wages, female_wages)
+```
+
+6. **Bootstrapping**
+```{R, result=FALSE}
+library(boot)
+
+mean_fuel_price <- function(data) {
+  mean(data[["Toronto.West"]])
+}
+
+set.seed(123)
+n_boot <- 1000 
+bootstrap_means <- replicate(n_boot, {
+  sample_data <- fuel[sample(1:nrow(fuel), replace = TRUE), ]
+  mean_fuel_price(sample_data)
+})
+
+ci <- quantile(bootstrap_means, c(0.025, 0.975))
+
+# Print the results
+cat("Mean fuel price for Ontario:", mean(fuel$Toronto.West), "\n")
+cat("95% confidence interval:", "( ", ci[1], "-", ci[2], " )", "\n")
+
+```
+
+7. **Random Forest**
+```{r, results=FALSE}
+d = wages %>%
+  select(!Both.Sexes) %>%
+  filter(Wages == 'Average hourly wage rate',
+         Type.of.work == 'Both full- and part-time',
+         Geography == 'Canada',
+         Education.level != 'Total, all education levels',
+         Age.group != '15 years and over') %>%
+  pivot_longer(c(Male, Female), 
+               names_to = "gender", 
+               values_to = "wage") 
+
+d = d %>% 
+  mutate(group = sample(c('train', 'test'), 
+                        size = nrow(d), 
+                        prob = c(0.9, 0.1), 
+                        replace=TRUE))
+
+train_data = d %>% filter(group == 'train')
+test_data = d %>% filter(group == 'test')
+
+model = randomForest(wage ~ Education.level + gender + Age.group, 
+                     data = train_data,
+                     ntree = 10,
+                     importance = TRUE)
+```
+
+8. **Cross Validation**
+```{R, results=F}
+test_data$predicted = predict(model, newdata = test_data)
+
+mean((test_data$wage - test_data$predicted)^2)
+```
