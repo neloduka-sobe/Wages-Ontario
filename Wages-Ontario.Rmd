@@ -18,6 +18,8 @@ library(ggplot2)
 library(reshape2)
 library(knitr)
 library(randomForest)
+library(dplyr, warn.conflicts = FALSE)
+options(dplyr.summarise.inform = FALSE)
 ```
 
 # Loading the Data
