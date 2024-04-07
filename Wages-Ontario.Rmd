@@ -336,12 +336,21 @@ ggplot(employee.year, aes(x = YEAR, y = Both.Sexes)) +
        x = "Year",
        y = "Number of Employees (thousands)")
 ```
+<<<<<<< HEAD
 This plot displays the total number of employees in a given year. For instance,
 in the year 2004 there were about 11 million employees in Canada. An interesting
 feature of this graph is how it captures the 2008 financial crisis, where almost
 1 million Canadianas lost their jobs. What's even more interesting is that no
 decrease in wages was observed amongst those who kept their jobs, as was shown
 previously.
+=======
+
+**Conclusions**:
+1. The graph shows a steady increase in the number of employees.
+2. In 2000, there were just over 10,000 employees.
+3. By 2020, the number had risen to approximately 13,000 employees.
+4. Plot shows an unusual number of employment reduction in 2008.
+>>>>>>> main
 
 # Hypothesis Testing
 
