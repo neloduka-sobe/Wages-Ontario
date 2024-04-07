@@ -155,10 +155,11 @@ Our research aims to explore wage dynamics in Ontario, considering economic fact
 6. How does educational attainment affect the gender wage gap?
 7. How has the total number of employees changed over the years?
   
-# Summary
+# Analysis
 
 ## How has the average hourly wage rate changed over the years across different age groups?
-```{R, warning=FALSE}
+
+```{R, echo=F}
 avg_wage_by_age <- wages %>%
   filter(Wages == "Average hourly wage rate",
          Geography == "Canada",
@@ -172,9 +173,26 @@ kable(avg_wage_by_age %>%
   pivot_wider(names_from = Age.group, values_from = Avg_Hourly_Wage))
 ```
 
+This table shows the average wage of each age group in dollars per hours for
+the given years. For instance, in the year 1997 those who were between 15 and 24
+years of age made 9 dollars and 82 cents per hour of work while those who were
+25 to 34 years old made 15 dollars and 29 cents.
 
-```{r, warning=FALSE}
-ggplot(avg_wage_by_age %>% filter(YEAR == "2019"),
+This table indicates that there has been a slow but steady growth in wages
+accross all age groups over the years from 1997 to 2019. Moreover, it appears
+that older age groups consistently earn higher wages than those in younger ones.
+For instance, in 2019 the average wage for those who were older than 55 was 30 
+dollars and 12 cents while those who were between 15 and 24 made only 19 dollars
+and 32 cents. However, the average wage of the oldest age group, 55+, was not
+much higher than the average wage of the total population—which in 2019 was 
+29.56 dollars per hour. This suggests that the number of employees between 15
+and 24 years of age is insignificant relative to older age groups.
+
+These results can also be seen in the following bar chart:
+
+```{r, echo=F}
+ggplot(avg_wage_by_age %>% 
+         filter(YEAR == "2019"),
        aes(x = Age.group, Avg_Hourly_Wage)) +
   geom_bar(stat = "identity") +
   labs(x = "Age group",
@@ -183,30 +201,37 @@ ggplot(avg_wage_by_age %>% filter(YEAR == "2019"),
   theme(text = element_text(size = 8))
 ```
 
-**From the data, we can observe the following trends:**
-
-1. Across all age groups, there is a general trend of increasing average hourly wage rates over the years.
-2. The wage rates tend to increase with age, with the highest rates typically observed in the 55 years and over age group.
-3. The 15-24 years age group consistently has the lowest average hourly wage rates, which gradually increase as individuals move into older age groups.
-
-These observations provide an overview of how the average hourly wage rates have changed over the years across different age groups.
-
 ## How does the average hourly wage rate differ across various education levels for different genders?
-```{R, warning=FALSE}
+
+```{R, echo=F}
 avg_wage_by_education <- wages %>%
   filter(Wages == "Average hourly wage rate", 
          Geography == "Canada",
          Age.group == "15 years and over",
+         # YEAR == '2019',
          Type.of.work == "Both full- and part-time") %>%
-  select(Education.level, Male, Female) %>%
+  select(Education.level, Male, Female, Both.Sexes) %>%
   group_by(Education.level) %>%
   summarise(male_avg = mean(Male),
-            female_avg = mean(Female))
+            female_avg = mean(Female),
+            Total = mean(Both.Sexes))
 
-kable(avg_wage_by_education)
+kable(avg_wage_by_education %>%
+  mutate(pay.gap = male_avg - female_avg),
+  col.names = c("Education Level", "Male", "Female", "Total", "Pay gap"),
+  caption = "Average wage by education level in male and female employees")
 ```
+This table indicates the average hourly wage of employees based on their
+education level. It also indicates the pay based on the gender of the employee.
+For instance, a male with a bachelor's degree makes, on average, 28 dollars
+an hour while a female makes 24 dollars resulting in a 4 dollar pay gap.
 
-```{R, warning=FALSE}
+From this table and the following graph, it is clear that with higher
+educational attainment the average wage rises. For example, an individual
+with a high school diploma makes about 14 dollars an hour while someone
+with a bachelor's degree makes 26 dollars. 
+
+```{R, echo = F}
 ggplot(avg_wage_by_education %>% melt(),
        aes(x = Education.level, fill = variable)) +
   geom_bar(aes(y = value), 
@@ -223,12 +248,15 @@ ggplot(avg_wage_by_education %>% melt(),
         legend.position = "bottom") +
   coord_flip()
 ```
-```{r, warning=FALSE}
-kable(avg_wage_by_education %>%
-  mutate(pay.gap = male_avg - female_avg))
-```
 
-```{r, warning=FALSE}
+A gender pay gap is observed, with males making about 3 dollars more on average
+than their female counterparts. An surprising result is that the gender pay gap 
+doesn't seem to changewith education level. In the previous example, males with 
+a high school degree made 3.99 dollars more than their female peers, while males
+with bachelor's degrees 4.06 dollars—only a 7 cent increase. This may also be 
+observed in the following plot.
+
+```{r, echo = F}
 ggplot(avg_wage_by_education %>% mutate(pay.gap = male_avg - female_avg), 
        aes(x = Education.level, y = pay.gap)) +
   geom_bar(stat = "identity") +
@@ -238,11 +266,9 @@ ggplot(avg_wage_by_education %>% mutate(pay.gap = male_avg - female_avg),
   coord_flip()
 ```
 
-**Observations:**
-
-1. In almost all cases, the average hourly wage for males is higher than for females across various education levels.
-2. The largest wage gaps are observed at "Trade certificate or diploma" where
-3. At higher education levels, such as "Above bachelor’s degree" and "Bachelor’s degree", the wage gap is relatively smaller compared to lower education levels but still exists.
+Interestingly, the largest gender gap was observed in those with a trade 
+certificate, where the pay gap is almost twice as large as in other education
+levels. 
 
 These observations highlight disparities in wages between genders across 
 different education levels, indicating the presence of gender-based wage 
@@ -250,13 +276,14 @@ inequality.
 
 ## What is the overall trend in the number of full-time employees versus part-time employees across different age groups?
 
-```{R, warning=FALSE}
-unique(wages$Type.of.work)
-
+```{R, warning=FALSE, echo = F}
 full_time_part_time <- wages %>% 
   filter(Age.group %in% c("15-24 years", 
                           "25-54 years", 
-                          "55 years and over")) %>%
+                          "55 years and over"),
+         Geography == 'Canada',
+         Education.level == 'Total, all education levels',
+         Wages == "Total employees") %>%
   group_by(Age.group, Type.of.work) %>%
   summarise(Employees = sum(Both.Sexes))
 
@@ -272,13 +299,34 @@ ggplot(full_time_part_time,
 
 ```
 
-**Conclusions**:
+From this plot, we can see that the number of full-time employees is
+consistently larger than the number of part-time employees across all age 
+groups. In fact, this plot confirms our hypothesis from before, as we can see
+that the number of employed 15-24 year olds is much smaller than the number
+of employed 25-54 year-olds—who have the highest employment out of any age
+group. This data suggests that as individuals grow older, they tend to favor
+part-time employment. Further analysis, such as examining trends over time or 
+considering demographic factors, may provide additional insights into the 
+employment dynamics across different age groups.
 
-1. Across all age groups, the number of full-time employees is consistently higher than the number of part-time employees.
-2. The age group of 25-54 years has the highest total number of employees, followed by the age group of 55 years and over, and then the age group of 15-24 years.
-3. The data suggests a trend where as individuals grow older, they tend to transition towards full-time employment.
-4. Further analysis, such as examining trends over time or considering demographic factors, may provide additional insights into the employment dynamics across different age groups.
+## How has the total number of employees changed over the years?
 
+```{r, echo = F}
+employee.year = wages %>%
+  filter(Wages == "Total employees",
+         Geography == "Canada",
+         Type.of.work == "Full-time",
+         Education.level == "Total, all education levels",
+         Age.group == '15 years and over') %>%
+  select(YEAR, Both.Sexes)
+
+ggplot(employee.year, aes(x = YEAR, y = Both.Sexes)) +
+  geom_point() +
+  labs(title = "Number of employees in a given year",
+       x = "Year",
+       y = "Number of Employees")
+```
+This plot shows that a bunch of people got fired in 2008.
 ## What is the relationship between Wages and Fuel Price?
 
 ```{R, warning=FALSE}
