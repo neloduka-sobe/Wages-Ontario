@@ -379,7 +379,7 @@ cat("95% confidence interval:", "( ", ci[1], "-", ci[2], " )", "\n")
 
 ```
 
-# Non-linear Regression Analysis
+# Random Forest
 
 ```{r}
 d = wages %>%
@@ -415,6 +415,8 @@ test_data$predicted = predict(model, newdata = test_data)
 
 mean((test_data$wage - test_data$predicted)^2)
 ```
+
+The MSE of around `r mean((test_data$wage - test_data$predicted)^2)` shows the average difference between actual and predicted wages. Such a value is considered significant, suggesting that the model may not generalize well to new data. This also means, that 
 
 # Summary of Research
 
