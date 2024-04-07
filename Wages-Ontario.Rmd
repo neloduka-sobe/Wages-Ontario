@@ -339,42 +339,6 @@ ggplot(employee.year, aes(x = YEAR, y = Both.Sexes)) +
 
 **This plot shows an unusual number of employment reduction in 2008.**
 
-## What is the relationship between Wages and Fuel Price?
-
-```{R, warning=FALSE}
-fuel.year = fuel %>%
-  mutate(Year = year(as.Date(Date))) %>%
-  group_by(Year) %>%
-  summarise(Avg.Price = mean(Ontario.Average))
-
-wages.year = wages %>%
-  filter(Geography == 'Ontario',
-         Wages == 'Average hourly wage rate',
-         Type.of.work == 'Both full- and part-time',
-         Education.level == 'Total, all education levels',
-         Age.group == '15 years and over') %>%
-  select(YEAR, Both.Sexes)
-
-merged_data <- merge(wages.year, fuel.year, by.x = "YEAR", by.y = "Year")
-
-ggplot(merged_data, aes(x = Both.Sexes, y = Avg.Price)) +
-  geom_point() +
-  geom_smooth(method = "lm") +
-  labs(x = "Average wage", 
-       y = "Average fuel price", 
-       title = "Relationship between Wages and Fuel Price")
-
-# fuel and wage vs year
-ggplot(merged_data, aes(x = YEAR)) +
-  geom_line(aes(y = Both.Sexes, color = "Both Sexes"), size = 1.5) +
-  geom_line(aes(y = Avg.Price, color = "Avg. Price")) +
-  # scale_y_continuous(sec.axis = sec_axis(~./0.1, name = "Avg. Price")) +
-  labs(x = "Year", y = "Both Sexes", color = "Legend")
-
-kable(avg_wage_by_education %>%
-  mutate(pay.gap = male_avg - female_avg))
-```
-
 # Hypothesis Testing
 **Null Hypothesis (H0)**: There is no statistically significant distinction in the average wages between male and female workers (μ_male = μ_female).
 
