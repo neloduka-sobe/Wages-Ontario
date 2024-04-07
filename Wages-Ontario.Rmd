@@ -334,12 +334,17 @@ ggplot(employee.year, aes(x = YEAR, y = Both.Sexes)) +
   geom_point() +
   labs(title = "Number of employees in a given year",
        x = "Year",
-       y = "Number of Employees")
+       y = "Number of Employees (thousands)")
 ```
-
-**This plot shows an unusual number of employment reduction in 2008.**
+This plot displays the total number of employees in a given year. For instance,
+in the year 2004 there were about 11 million employees in Canada. An interesting
+feature of this graph is how it captures the 2008 financial crisis, where almost
+1 million Canadianas lost their jobs. What's even more interesting is that no
+decrease in wages was observed amongst those who kept their jobs, as was shown
+previously.
 
 # Hypothesis Testing
+
 **Null Hypothesis (H0)**: There is no statistically significant distinction in the average wages between male and female workers (μ_male = μ_female).
 
 **Alternative Hypothesis (H1)**: There exists a statistically significant disparity in average wages between male and female workers (μ_male ≠ μ_female).
