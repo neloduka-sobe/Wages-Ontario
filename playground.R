@@ -70,6 +70,17 @@ ggplot(merged_data, aes(x = YEAR)) +
 kable(avg_wage_by_education %>%
   mutate(pay.gap = male_avg - female_avg))
 
+full_time_part_time <- wages %>% 
+  filter(Age.group %in% c("15-24 years", 
+                          "25-54 years", 
+                          "55 years and over"),
+         Geography == 'Canada',
+         Education.level == 'Total, all education levels',
+         Wages == "Total employees") %>%
+  group_by(Age.group, Type.of.work) %>%
+  summarise(Employees = sum(Both.Sexes))
+
+
 
 
 
