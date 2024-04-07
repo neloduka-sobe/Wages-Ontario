@@ -297,6 +297,13 @@ ggplot(full_time_part_time,
 
 ```
 
+**Conclusions**:
+
+1. Across all age groups, the number of full-time employees is consistently higher than the number of part-time employees.
+2. The age group of 25-54 years has the highest total number of employees, followed by the age group of 55 years and over, and then the age group of 15-24 years.
+3. The data suggests a trend where as individuals grow older, they tend to transition towards full-time employment.
+4. Further analysis, such as examining trends over time or considering demographic factors, may provide additional insights into the employment dynamics across different age groups.
+
 ## What is the relationship between Wages and Fuel Price?
 
 ```{R}
