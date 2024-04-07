@@ -79,7 +79,7 @@ The `wages` data set includes the average weekly wages rates by education level
 and immigration status for Canada and Ontario in the years from 1997 to 2019. 
 It includes the following columns:
 
-```{r, warning=FALSE}
+```{r, warning=FALSE, echo=False}
 names(wages)
 ```
 
@@ -117,7 +117,7 @@ kable(wages %>%
 9. `Female`: The data for females.
 
 ## Fuels price survey information 
-```{r, warning=FALSE}
+```{r, warning=FALSE, echo=False}
 names(fuel)
 ```
 
@@ -190,7 +190,7 @@ much higher than the average wage of the total population—which in 2019 was
 29.56 dollars per hour. This suggests that the number of employees between 15
 and 24 years of age is insignificant relative to older age groups.
 
-These results can also be seen in the following bar chart:
+**These results can also be seen in the following bar chart**:
 
 ```{r, echo=F}
 ggplot(avg_wage_by_age %>% 
@@ -223,6 +223,8 @@ kable(avg_wage_by_education %>%
   col.names = c("Education Level", "Male", "Female", "Total", "Pay gap"),
   caption = "Average wage by education level in male and female employees")
 ```
+
+**Conlusions**:
 This table indicates the average hourly wage of employees based on their
 education level. It also indicates the pay based on the gender of the employee.
 For instance, a male with a bachelor's degree makes, on average, 28 dollars
@@ -251,6 +253,8 @@ ggplot(avg_wage_by_education %>% melt(),
   coord_flip()
 ```
 
+**Conlusions**:
+
 A gender pay gap is observed, with males making about 3 dollars more on average
 than their female counterparts. An surprising result is that the gender pay gap 
 doesn't seem to changewith education level. In the previous example, males with 
@@ -267,6 +271,8 @@ ggplot(avg_wage_by_education %>% mutate(pay.gap = male_avg - female_avg),
        title = "Gender Pay Gap by Education") +
   coord_flip()
 ```
+
+**Conlusions**:
 
 Interestingly, the largest gender gap was observed in those with a trade 
 certificate, where the pay gap is almost twice as large as in other education
@@ -301,6 +307,8 @@ ggplot(full_time_part_time,
 
 ```
 
+**Conlusions**:
+
 From this plot, we can see that the number of full-time employees is
 consistently larger than the number of part-time employees across all age 
 groups. In fact, this plot confirms our hypothesis from before, as we can see
@@ -328,7 +336,9 @@ ggplot(employee.year, aes(x = YEAR, y = Both.Sexes)) +
        x = "Year",
        y = "Number of Employees")
 ```
-This plot shows that a bunch of people got fired in 2008.
+
+**This plot shows an unusual number of employment reduction in 2008.**
+
 ## What is the relationship between Wages and Fuel Price?
 
 ```{R, warning=FALSE}
