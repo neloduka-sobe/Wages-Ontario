@@ -96,7 +96,7 @@ names(wages)
        and `Median weekly wage rate`.
 5. `Education.level`: Indicates the level of education. It can include the 
    following:
-```{r, warning=FALSE}
+```{r, echo=FALSE, warning=FALSE}
 kable(wages %>%
   group_by(Education.level) %>%
   reframe(Education.level) %>%
@@ -104,7 +104,7 @@ kable(wages %>%
 ```
 6. `Age.group`: Indicates the age range of the individuals under consideration.
    It can include the following:
-```{r, echo=FALSE}
+```{r, echo=FALSE, warning=FALSE}
 kable(wages %>%
   group_by(Age.group) %>%
   reframe(Age.group) %>%
@@ -126,6 +126,7 @@ names(fuel)
 5. `Southern.Average.Ontario`: Indicates the average fuel price across the southern regions of Ontario.
 6. `Northern.Average.Ontario`: Indicates the average fuel price across the northern regions of Ontario.
 7. `Fuel.Type`: Indicates the type of fuel associated with the data.
+
 
 # The Background of the Data
 
@@ -363,7 +364,6 @@ cat("95% confidence interval:", "( ", ci[1], "-", ci[2], " )", "\n")
 ```
 
 According to our findings, the mean fuel price for Ontario stands at `r mean(fuel$Toronto.West)`. Our computed 95% confidence interval spans from `r ci[1]` to `r ci[2]``. This suggests with 95% confidence that the genuine mean fuel price for Ontario lies within this interval.
-
 
 # Random Forest
 
