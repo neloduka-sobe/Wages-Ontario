@@ -427,7 +427,16 @@ model = randomForest(wage ~ Education.level + gender + Age.group,
                      data = train_data,
                      ntree = 10,
                      importance = TRUE)
+
+model
 ```
+Thus, this model has a RSS of 19.79 dollars squared, which is quite large 
+compared to the average of the numbers we are trying to predict. This means that
+the model is quite unreliable at correctly predicting the average income of a 
+group based on demographic factors. This is also reflected in the low percentage
+of explained variablity. This model only explains 53.12 percent of the 
+variability in this data, which is not particularly great, indicating that the
+relationship between income and other demographic factors is hard to explain.
 
 # Cross Validation
 
