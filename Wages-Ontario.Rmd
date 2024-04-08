@@ -350,9 +350,9 @@ previously.
 
 # Hypothesis Testing
 
-**Null Hypothesis (H0)**: There is no statistically significant distinction in the average wages between male and female workers (μ_male = μ_female).
+**Null Hypothesis (H0)**: There is no statistically significant distinction in the average wages between male and female workers ($\mu_\text{male} = \mu_\text{female}$).
 
-**Alternative Hypothesis (H1)**: There exists a statistically significant disparity in average wages between male and female workers (μ_male ≠ μ_female).
+**Alternative Hypothesis (H1)**: There exists a statistically significant disparity in average wages between male and female workers ($\mu_\text{male} \neq \mu_\text{female}$).
 To examine this hypothesis, we can employ a two-sample t-test to compare the wage distributions of male and female workers. This entails segregating the dataset into two distinct groups based on gender: male and female.
 
 The resultant p-value derived from the selected statistical test indicates the probability of observing a wage difference as extreme as, or more extreme than, the observed difference, assuming the null hypothesis holds. If the obtained p-value falls below the predetermined significance level (typically 0.05), we reject the null hypothesis, indicating a significant discrepancy in wages between male and female workers.
@@ -669,7 +669,6 @@ ggplot(full_time_part_time,
        y = "Number of Employees",
        fill = "Type of Work") +
   theme(axis.text.x = element_text(angle = 45, hjust = 1))
-
 ```
 
 ```{r, results = F, fig.keep = "none"}
@@ -716,7 +715,6 @@ ci <- quantile(bootstrap_means, c(0.025, 0.975))
 # Print the results
 cat("Mean fuel price for Ontario:", mean(fuel$Toronto.West), "\n")
 cat("95% confidence interval:", "( ", ci[1], "-", ci[2], " )", "\n")
-
 ```
 
 7. **Random Forest**
