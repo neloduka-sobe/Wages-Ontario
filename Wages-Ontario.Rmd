@@ -404,6 +404,10 @@ cat("95% confidence interval:", "( ", ci[1], "-", ci[2], " )", "\n")
 
 # Random Forest
 
+We employ a random forest model to predict wages based on education, gender, and
+age group. The random forest approach is chosen for its simplicity and ability 
+to handle complex relationships.
+
 ```{r, warning=FALSE, echo=FALSE}
 set.seed(1337)
 d = wages %>%
@@ -442,19 +446,11 @@ of explained variablity. This model only explains 52.07 percent of the
 variability in this data, which is not particularly great, indicating that the
 relationship between income and other demographic factors is hard to explain.
 
-We are analyzing wage data from Canada, specifically focusing on the average hourly wage rates for different demographic groups. After preprocessing the data to filter out irrelevant categories and reshape it into a suitable format, we split the dataset into training and testing sets using a stratified sampling approach.
-
-Next, we employ a random forest regression model to predict wages based on several predictor variables, including education level, gender, and age group. The random forest algorithm is chosen for its ability to handle complex relationships between predictors and response variables, as well as its robustness to overfitting.
-
-
-**Explanation:**
-
-The model's accuracy is assessed using metrics such as the mean squared residuals and the percentage of variation explained (Var explained). The mean squared residuals measure the average discrepancy between the observed and predicted wage rates, with a lower value indicating a better fit of the model to the data. In this case, the mean of squared residuals is 18.7288.
-
-The percentage of variation explained (Var explained) provides an indication of how well the model accounts for the variability in the wage rates. A higher percentage suggests that the predictor variables included in the model collectively explain a larger proportion of the variability in the data. Here, the model explains 56.15% of the variation in the wage rates, indicating a moderate level of explanatory power.
-
-
 # Cross Validation
+
+For cross validation, we use a stratified sampling approach where we split
+the data set randomly into two parts, the first of which will be used for 
+training our model and the second will be used for testing.
 
 ```{r, warning=FALSE, echo=F}
 test_data$predicted = predict(model, newdata = test_data)
@@ -493,7 +489,6 @@ Based on the research conducted, the key findings are:
 
 **In summary, the research highlights persistent wage disparities across age, education, and gender, underscoring the need for interventions to address these inequalities in the workforce.**
 
-\pagebreak
 # Appendix
 1. **Importing libraries**
 ```{r, results = FALSE}
