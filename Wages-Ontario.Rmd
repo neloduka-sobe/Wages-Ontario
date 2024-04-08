@@ -1,5 +1,5 @@
 ---
-title: "Analysis of Ontario wages in relation to economic factors based on Ontario Data Catalogue (1997-2019)"
+title: "Analysis of Ontario wages based on Ontario Data Catalogue (1997-2019)"
 author:
   - "Borys Łangowicz (1010725967)"
   - "Kian Dianati (1010205485)"
@@ -80,20 +80,20 @@ It includes the following columns:
 names(wages)
 ```
 
-1. `YEAR`: Indicates the year in which the data was collected.
-2. `Geography`: Indicates the region from which the data was collected. Its 
+1. **`YEAR`**: Indicates the year in which the data was collected.
+2. **`Geography`**: Indicates the region from which the data was collected. Its 
    possible values include Canada as well as the Canadian provinces and 
    territories.
-3. `Type.of.work`: Indicates whether the data in the row is for full-time 
+3. **`Type.of.work`**: Indicates whether the data in the row is for full-time 
    employees or part-time employees or both.
-4. `Wages`:
-    1. `Total employees`: The number of employees in the given age range, 
+4. **`Wages`**:
+    1. **`Total employees`**: The number of employees in the given age range, 
        education level, and job status.
-    2. `Average hourly wage rate`: The average hourly wage of the employees in 
+    2. **`Average hourly wage rate`**: The average hourly wage of the employees in 
        the given age range, education level, and job status.
-    3. And so on for `Average weekly wage rate`, `Median hourly wage rate`, 
-       and `Median weekly wage rate`.
-5. `Education.level`: Indicates the level of education. It can include the 
+    3. And so on for **`Average weekly wage rate`**, **`Median hourly wage rate`**, 
+       and **`Median weekly wage rate`**.
+5. **`Education.level`**: Indicates the level of education. It can include the 
    following:
 ```{r, echo=FALSE, warning=FALSE}
 kable(wages %>%
@@ -101,7 +101,7 @@ kable(wages %>%
   reframe(Education.level) %>%
   unique())
 ```
-6. `Age.group`: Indicates the age range of the individuals under consideration.
+6. **`Age.group`**: Indicates the age range of the individuals under consideration.
    It can include the following:
 ```{r, echo=FALSE, warning=FALSE}
 kable(wages %>%
@@ -109,22 +109,22 @@ kable(wages %>%
   reframe(Age.group) %>%
   unique())
 ```
-7. `Both.sexes`: The data not seperated by gender.
-8. `Male`: The data for males.
-9. `Female`: The data for females.
+7. **`Both.sexes`**: The data not seperated by gender.
+8. **`Male`**: The data for males.
+9. **`Female`**: The data for females.
 
 ## Fuels price survey information 
 ```{r, warning=FALSE, echo=FALSE}
 names(fuel)
 ```
 
-1. `Date`: Indicates the date on which the data was collected.
-2. `Fuel Price`: Represents the price of fuel.
-3. `Ottawa`, `Toronto.West`, `Toronto.East`, `Windsor`, `London`, `Peterborough`, `St.Catharine`, `Sudbury`, `Sault.Saint.Marie`, `Thunder.Bay`, `North.Bay`, `Timmins`, `Kenora`, `Parry.Sound`: Represents the fuel price in various locations in Ontario, Canada.
-4. `Ontario.Average`: Indicates the average fuel price across different regions of Ontario.
-5. `Southern.Average.Ontario`: Indicates the average fuel price across the southern regions of Ontario.
-6. `Northern.Average.Ontario`: Indicates the average fuel price across the northern regions of Ontario.
-7. `Fuel.Type`: Indicates the type of fuel associated with the data.
+1. **`Date`**: Indicates the date on which the data was collected.
+2. **`Fuel Price`**: Represents the price of fuel.
+3. **`Ottawa`**, **`Toronto.West`**, **`Toronto.East`**, **`Windsor`**, **`London`**, **`Peterborough`**, **`St.Catharine`**, **`Sudbury`**, **`Sault.Saint.Marie`**, **`Thunder.Bay`**, **`North.Bay`**, **`Timmins`**, **`Kenora`**, **`Parry.Sound`**: Represents the fuel price in various locations in Ontario, Canada.
+4. **`Ontario.Average`**: Indicates the average fuel price across different regions of Ontario.
+5. **`Southern.Average.Ontario`**: Indicates the average fuel price across the southern regions of Ontario.
+6. **`Northern.Average.Ontario`**: Indicates the average fuel price across the northern regions of Ontario.
+7. **`Fuel.Type`**: Indicates the type of fuel associated with the data.
 
 
 # The Background of the Data
@@ -144,7 +144,7 @@ analysis efforts in economics, environmental studies, and energy policy.
 
 # Overall Research Question
 
-Our research aims to explore wage dynamics in Ontario, considering economic factors. We're particularly interested in:
+**Our research aims to explore wage dynamics in Ontario, considering economic factors. We're particularly interested in**:
 
 1. How has the average hourly wage rate changed over the years across different age groups?
 2. How does the average hourly wage rate differ across various education levels?
@@ -171,6 +171,7 @@ avg_wage_by_age <- wages %>%
 kable(avg_wage_by_age %>%
   pivot_wider(names_from = Age.group, values_from = Avg_Hourly_Wage))
 ```
+
 
 This table shows the average wage of each age group in dollars per hours for
 the given years. For instance, in the year 1997 those who were between 15 and 24
@@ -221,6 +222,7 @@ kable(avg_wage_by_education %>%
   caption = "Average wage by education level in male and female employees")
 ```
 
+
 **Conlusions**:
 This table indicates the average hourly wage of employees based on their
 education level. It also indicates the pay based on the gender of the employee.
@@ -250,8 +252,8 @@ ggplot(avg_wage_by_education %>% melt(),
   coord_flip()
 ```
 
-**Conlusions**:
 
+**Conlusions**:
 A gender pay gap is observed, with males making about 3 dollars more on average
 than their female counterparts. An surprising result is that the gender pay gap 
 doesn't seem to changewith education level. In the previous example, males with 
@@ -268,6 +270,7 @@ ggplot(avg_wage_by_education %>% mutate(pay.gap = male_avg - female_avg),
        title = "Gender Pay Gap by Education") +
   coord_flip()
 ```
+
 
 **Conlusions**:
 
@@ -304,6 +307,7 @@ ggplot(full_time_part_time,
 
 ```
 
+
 **Conlusions**:
 
 From this plot, we can see that the number of full-time employees is
@@ -334,6 +338,7 @@ ggplot(employee.year, aes(x = YEAR, y = Both.Sexes)) +
        y = "Number of Employees (thousands)")
 ```
 
+
 **Conclusions**:
 This plot displays the total number of employees in a given year. For instance,
 in the year 2004 there were about 11 million employees in Canada. An interesting
@@ -360,6 +365,7 @@ female_wages <- wages %>% filter(Wages == "Average weekly wage rate") %>% select
 t.test(male_wages, female_wages)
 ```
 
+
 **Conclusions**
 The outcomes derived from the Welch Two Sample t-test underscore a significant contrast in average earnings between male and female workers. With an extraordinarily minute p-value (< 0.00000000000000022), there's compelling evidence to dismiss the null hypothesis, indicating that the mean wages for men and women diverge significantly. The 95% confidence interval for the mean wage discrepancy extends from 116.8124 to 123.6314, suggesting that the actual difference in wages between male and female workers likely lies within this interval.
 
@@ -367,7 +373,7 @@ In summary, the findings overwhelmingly advocate for rejecting the null hypothes
 
 # Bootstrapping
 
-We utilize bootstrapping to estimate the sampling distribution of the mean fuel price for Toronto West and to compute a confidence interval.
+**We utilize bootstrapping to estimate the sampling distribution of the mean fuel price for Toronto West and to compute a confidence interval.**
 
 ```{R, warning=FALSE, echo=FALSE}
 library(boot)
@@ -391,7 +397,8 @@ cat("95% confidence interval:", "( ", ci[1], "-", ci[2], " )", "\n")
 
 ```
 
-According to our findings, the mean fuel price for Ontario stands at `r mean(fuel$Toronto.West)`. Our computed 95% confidence interval spans from `r ci[1]` to `r ci[2]``. This suggests with 95% confidence that the genuine mean fuel price for Ontario lies within this interval.
+
+**According to our findings, the mean fuel price for Ontario stands at `r mean(fuel$Toronto.West)`. Our computed 95% confidence interval spans from `r ci[1]` to `r ci[2]``. This suggests with 95% confidence that the genuine mean fuel price for Ontario lies within this interval.**
 
 # Random Forest
 
@@ -430,7 +437,7 @@ test_data$predicted = predict(model, newdata = test_data)
 mean((test_data$wage - test_data$predicted)^2)
 ```
 
-The MSE of around `r mean((test_data$wage - test_data$predicted)^2)` shows the average difference between actual and predicted wages. Such a value is considered significant, suggesting that the model may not generalize well to new data. This also means, that 
+**The MSE of around `r mean((test_data$wage - test_data$predicted)^2)` shows the average difference between actual and predicted wages. Such a value is considered significant, suggesting that the model may not generalize well to new data. This indicates that the relationship between education level, gender, age group, and wage is not straightforward or obvious. 
 
 # Summary of Research
 
