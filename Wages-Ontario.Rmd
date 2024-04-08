@@ -405,6 +405,7 @@ cat("95% confidence interval:", "( ", ci[1], "-", ci[2], " )", "\n")
 # Random Forest
 
 ```{r, warning=FALSE, echo=FALSE}
+set.seed(1337)
 d = wages %>%
   select(!Both.Sexes) %>%
   filter(Wages == 'Average hourly wage rate',
@@ -432,11 +433,12 @@ model = randomForest(wage ~ Education.level + gender + Age.group,
 
 model
 ```
-Thus, this model has a RSS of 19.79 dollars squared, which is quite large 
+
+Thus, this model has a RSS of 20.54053 dollars squared, which is quite large 
 compared to the average of the numbers we are trying to predict. This means that
 the model is quite unreliable at correctly predicting the average income of a 
 group based on demographic factors. This is also reflected in the low percentage
-of explained variablity. This model only explains 53.12 percent of the 
+of explained variablity. This model only explains 52.07 percent of the 
 variability in this data, which is not particularly great, indicating that the
 relationship between income and other demographic factors is hard to explain.
 
@@ -444,11 +446,13 @@ We are analyzing wage data from Canada, specifically focusing on the average hou
 
 Next, we employ a random forest regression model to predict wages based on several predictor variables, including education level, gender, and age group. The random forest algorithm is chosen for its ability to handle complex relationships between predictors and response variables, as well as its robustness to overfitting.
 
+
 **Explanation:**
 
 The model's accuracy is assessed using metrics such as the mean squared residuals and the percentage of variation explained (Var explained). The mean squared residuals measure the average discrepancy between the observed and predicted wage rates, with a lower value indicating a better fit of the model to the data. In this case, the mean of squared residuals is 18.7288.
 
 The percentage of variation explained (Var explained) provides an indication of how well the model accounts for the variability in the wage rates. A higher percentage suggests that the predictor variables included in the model collectively explain a larger proportion of the variability in the data. Here, the model explains 56.15% of the variation in the wage rates, indicating a moderate level of explanatory power.
+
 
 # Cross Validation
 
@@ -459,6 +463,7 @@ mean((test_data$wage - test_data$predicted)^2)
 ```
 
 **The MSE of around `r mean((test_data$wage - test_data$predicted)^2)` shows the average difference between actual and predicted wages. Such a value is considered significant, suggesting that the model may not generalize well to new data. This indicates that the relationship between education level, gender, age group, and wage is not straightforward or obvious. 
+
 
 # Summary of Research
 
@@ -476,7 +481,6 @@ Based on the research conducted, the key findings are:
 ## Employment Trends Across Age Groups:
 1. Full-time employment is predominant across age groups.
 2. Part-time employment increases with age.
-3. The highest employment rates are among the 25-54 age group.
 
 ## Total Employee Numbers Over Time:
 1. Employee numbers fluctuate over time, with significant drops during events like the 2008 financial crisis.
