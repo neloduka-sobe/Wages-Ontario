@@ -340,6 +340,7 @@ ggplot(employee.year, aes(x = YEAR, y = Both.Sexes)) +
 
 
 **Conclusions**:
+
 This plot displays the total number of employees in a given year. For instance,
 in the year 2004 there were about 11 million employees in Canada. An interesting
 feature of this graph is how it captures the 2008 financial crisis, where almost
@@ -367,6 +368,7 @@ t.test(male_wages, female_wages)
 
 
 **Conclusions**
+
 The outcomes derived from the Welch Two Sample t-test underscore a significant contrast in average earnings between male and female workers. With an extraordinarily minute p-value (< 0.00000000000000022), there's compelling evidence to dismiss the null hypothesis, indicating that the mean wages for men and women diverge significantly. The 95% confidence interval for the mean wage discrepancy extends from 116.8124 to 123.6314, suggesting that the actual difference in wages between male and female workers likely lies within this interval.
 
 In summary, the findings overwhelmingly advocate for rejecting the null hypothesis, underscoring a noteworthy disparity in wages between male and female employees. Specifically, the average wage for male workers (627.8701) markedly exceeds that of female workers (507.6481).
@@ -429,6 +431,16 @@ model = randomForest(wage ~ Education.level + gender + Age.group,
                      importance = TRUE)
 ```
 
+We are analyzing wage data from Canada, specifically focusing on the average hourly wage rates for different demographic groups. After preprocessing the data to filter out irrelevant categories and reshape it into a suitable format, we split the dataset into training and testing sets using a stratified sampling approach.
+
+Next, we employ a random forest regression model to predict wages based on several predictor variables, including education level, gender, and age group. The random forest algorithm is chosen for its ability to handle complex relationships between predictors and response variables, as well as its robustness to overfitting.
+
+**Explanation:**
+
+The model's accuracy is assessed using metrics such as the mean squared residuals and the percentage of variation explained (Var explained). The mean squared residuals measure the average discrepancy between the observed and predicted wage rates, with a lower value indicating a better fit of the model to the data. In this case, the mean of squared residuals is 18.7288.
+
+The percentage of variation explained (Var explained) provides an indication of how well the model accounts for the variability in the wage rates. A higher percentage suggests that the predictor variables included in the model collectively explain a larger proportion of the variability in the data. Here, the model explains 56.15% of the variation in the wage rates, indicating a moderate level of explanatory power.
+
 # Cross Validation
 
 ```{r, warning=FALSE, echo=F}
@@ -441,6 +453,34 @@ mean((test_data$wage - test_data$predicted)^2)
 
 # Summary of Research
 
+Based on the research conducted, the key findings are:
+
+## Wage Trends Across Age Groups:
+1. Wages have steadily increased from 1997 to 2019.
+2. Older age groups earn higher wages, but the disparity isn't significant compared to the overall average.
+
+## Education Level and Gender Wage Differences:
+1. Higher education correlates with higher wages.
+2. A consistent gender wage gap exists across all education levels, with males earning more.
+3. The gap remains consistent, indicating persistent gender-based wage inequality.
+
+## Employment Trends Across Age Groups:
+1. Full-time employment is predominant across age groups.
+2. Part-time employment increases with age.
+3. The highest employment rates are among the 25-54 age group.
+
+## Total Employee Numbers Over Time:
+1. Employee numbers fluctuate over time, with significant drops during events like the 2008 financial crisis.
+2. Wages remain stable for those employed despite fluctuations.
+
+## Gender Wage Disparity Analysis:
+1. Welch Two Sample t-test shows a significant difference in average earnings between genders.
+2. The test rejects the null hypothesis, confirming a notable wage gap.
+3. The 95% confidence interval suggests a substantial range, indicating gender-based wage inequality.
+
+**In summary, the research highlights persistent wage disparities across age, education, and gender, underscoring the need for interventions to address these inequalities in the workforce.**
+
+\pagebreak
 # Appendix
 1. **Importing libraries**
 ```{r, results = FALSE}
@@ -694,15 +734,7 @@ model = randomForest(wage ~ Education.level + gender + Age.group,
                      importance = TRUE)
 ```
 
-We are analyzing wage data from Canada, specifically focusing on the average hourly wage rates for different demographic groups. After preprocessing the data to filter out irrelevant categories and reshape it into a suitable format, we split the dataset into training and testing sets using a stratified sampling approach.
 
-Next, we employ a random forest regression model to predict wages based on several predictor variables, including education level, gender, and age group. The random forest algorithm is chosen for its ability to handle complex relationships between predictors and response variables, as well as its robustness to overfitting.
-
-**Explanation:**
-
-The model's accuracy is assessed using metrics such as the mean squared residuals and the percentage of variation explained (Var explained). The mean squared residuals measure the average discrepancy between the observed and predicted wage rates, with a lower value indicating a better fit of the model to the data. In this case, the mean of squared residuals is 18.7288.
-
-The percentage of variation explained (Var explained) provides an indication of how well the model accounts for the variability in the wage rates. A higher percentage suggests that the predictor variables included in the model collectively explain a larger proportion of the variability in the data. Here, the model explains 56.15% of the variation in the wage rates, indicating a moderate level of explanatory power.
 
 
 8. **Cross Validation**
