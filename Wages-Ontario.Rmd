@@ -517,7 +517,7 @@ names(fuel)
 ```
 
 4. **Analysis**
-```{R, results=F}
+```{R, results = "hide", fig.keep = "none"}
 avg_wage_by_age <- wages %>%
   filter(Wages == "Average hourly wage rate",
          Geography == "Canada",
@@ -531,7 +531,7 @@ kable(avg_wage_by_age %>%
   pivot_wider(names_from = Age.group, values_from = Avg_Hourly_Wage))
 ```
 
-```{r, results=F}
+```{r, results = "hide", fig.keep = "none"}
 ggplot(avg_wage_by_age %>% 
          filter(YEAR == "2019"),
        aes(x = Age.group, Avg_Hourly_Wage)) +
@@ -542,7 +542,7 @@ ggplot(avg_wage_by_age %>%
   theme(text = element_text(size = 8))
 ```
 
-```{R, results=F}
+```{R, results=F, fig.keep = "none"}
 avg_wage_by_education <- wages %>%
   filter(Wages == "Average hourly wage rate", 
          Geography == "Canada",
@@ -561,7 +561,7 @@ kable(avg_wage_by_education %>%
   caption = "Average wage by education level in male and female employees")
 ```
 
-```{R, results = F}
+```{R, results = F, fig.keep = "none"}
 ggplot(avg_wage_by_education %>% melt(),
        aes(x = Education.level, fill = variable)) +
   geom_bar(aes(y = value), 
@@ -579,7 +579,7 @@ ggplot(avg_wage_by_education %>% melt(),
   coord_flip()
 ```
 
-```{r, results = F}
+```{r, results = F, fig.keep = "none"}
 ggplot(avg_wage_by_education %>% mutate(pay.gap = male_avg - female_avg), 
        aes(x = Education.level, y = pay.gap)) +
   geom_bar(stat = "identity") +
@@ -589,7 +589,7 @@ ggplot(avg_wage_by_education %>% mutate(pay.gap = male_avg - female_avg),
   coord_flip()
 ```
 
-```{R, results = F}
+```{R, results = F, fig.keep = "none"}
 full_time_part_time <- wages %>% 
   filter(Age.group %in% c("15-24 years", 
                           "25-54 years", 
@@ -612,7 +612,7 @@ ggplot(full_time_part_time,
 
 ```
 
-```{r, results = F}
+```{r, results = F, fig.keep = "none"}
 employee.year = wages %>%
   filter(Wages == "Total employees",
          Geography == "Canada",
@@ -629,7 +629,7 @@ ggplot(employee.year, aes(x = YEAR, y = Both.Sexes)) +
 ```
 
 5. **Hypothesis Testing**
-```{R, results=F}
+```{R, results=F, fig.keep = "none"}
 male_wages <- wages %>% filter(Wages == "Average weekly wage rate") %>% select(Male)
 female_wages <- wages %>% filter(Wages == "Average weekly wage rate") %>% select(Female)
 
@@ -637,7 +637,7 @@ t.test(male_wages, female_wages)
 ```
 
 6. **Bootstrapping**
-```{R, result=FALSE}
+```{R, result=FALSE, fig.keep = "none"}
 library(boot)
 
 mean_fuel_price <- function(data) {
@@ -660,7 +660,7 @@ cat("95% confidence interval:", "( ", ci[1], "-", ci[2], " )", "\n")
 ```
 
 7. **Random Forest**
-```{r, results=FALSE}
+```{r, results=FALSE, fig.keep = "none"}
 d = wages %>%
   select(!Both.Sexes) %>%
   filter(Wages == 'Average hourly wage rate',
@@ -688,7 +688,7 @@ model = randomForest(wage ~ Education.level + gender + Age.group,
 ```
 
 8. **Cross Validation**
-```{R, results=F}
+```{R, results=F, fig.keep = "none"}
 test_data$predicted = predict(model, newdata = test_data)
 
 mean((test_data$wage - test_data$predicted)^2)
